@@ -29,7 +29,7 @@ body[data-page] {
     animation: ambient-drift-two 24s ease-in-out infinite alternate;
   }
 
-  > :not(.toast-region, .modal-backdrop) {
+  > :not(.toast-region, .modal-backdrop, .app-sidebar) {
     position: relative;
     z-index: 1;
   }

@@ -5,17 +5,39 @@
 }
 
 .dashboard-hero {
+  position: relative;
   display: flex;
-  align-items: flex-end;
+  overflow: hidden;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-6);
   margin-bottom: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  background:
+    radial-gradient(circle at 82% 0%, var(--ambient-one), transparent 38%),
+    var(--surface-glass);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(18px) saturate(140%);
+
+  &::after {
+    position: absolute;
+    right: -3rem;
+    bottom: -5rem;
+    width: 12rem;
+    height: 12rem;
+    border: 1px solid color-mix(in srgb, var(--color-primary), transparent 76%);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+  }
 
   h1 {
     margin: var(--space-2) 0 0;
     font-size: clamp(1.75rem, 4vw, 2.25rem);
-    font-weight: 500;
-    letter-spacing: -0.025em;
+    font-weight: 700;
+    letter-spacing: -0.04em;
     line-height: 1.15;
   }
 }
@@ -23,6 +45,12 @@
 .dashboard-clock {
   display: grid;
   justify-items: end;
+  min-width: 9.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--color-surface), transparent 14%);
+  box-shadow: var(--shadow-sm);
   color: var(--color-text-muted);
   font-size: 0.8125rem;
 
@@ -55,12 +83,33 @@
 .dashboard-panel {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-overlay);
+  background: var(--surface-glass);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(14px) saturate(130%);
 }
 
 .stat-card {
-  padding: var(--space-5);
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-6);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+
+  &::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background: var(--gradient-primary);
+    content: "";
+  }
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--color-primary), transparent 60%);
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-3px);
+  }
 
   p {
     margin: 0 0 var(--space-2);
@@ -71,8 +120,8 @@
   strong {
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    letter-spacing: -0.025em;
+    font-weight: 700;
+    letter-spacing: -0.04em;
   }
 }
 
@@ -85,11 +134,20 @@
 
 .dashboard-panel {
   overflow: hidden;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--color-primary), transparent 72%);
+    box-shadow: var(--shadow-card-hover);
+  }
 }
 
 .dashboard-panel__header {
   border-bottom: 1px solid var(--color-border);
-  padding: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  background: linear-gradient(135deg, var(--color-surface-subtle), transparent);
 
   h2 {
     margin: var(--space-1) 0 0;
@@ -113,6 +171,14 @@
   border-radius: var(--radius-sm);
   padding: 0 var(--space-4);
   background: var(--color-surface-subtle);
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+
+  &:hover {
+    background: color-mix(in srgb, currentcolor, transparent 92%);
+    transform: translateX(3px);
+  }
 
   span {
     color: var(--color-text-muted);
@@ -152,6 +218,11 @@
   gap: var(--space-4);
   border-bottom: 1px solid var(--color-border);
   padding: var(--space-4) var(--space-5);
+  transition: background-color 160ms ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--color-primary), transparent 95%);
+  }
 }
 
 .recent-client__name,
@@ -186,6 +257,7 @@
   text-align: right;
 
   a {
+    color: var(--color-primary);
     font-size: 0.8125rem;
     font-weight: 600;
   }
@@ -213,6 +285,7 @@
   .dashboard-hero {
     align-items: flex-start;
     flex-direction: column;
+    padding: var(--space-6);
   }
 
   .dashboard-clock {
