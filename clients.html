@@ -11,11 +11,20 @@
   <body class="app-layout" data-page="clients">
     <aside class="app-sidebar" data-navigation-root aria-label="Application navigation"></aside>
 
-    <main class="placeholder-page" id="main-content">
-      <section class="placeholder-card" aria-labelledby="page-title">
-        <p class="eyebrow">Customer relationships</p>
-        <h1 id="page-title">Clients</h1>
-        <p>Client loading and management will be implemented in the client stages.</p>
+    <main class="clients-page" id="main-content">
+      <header class="clients-page__header">
+        <div>
+          <p class="eyebrow">Customer relationships</p>
+          <h1 id="page-title">Clients</h1>
+        </div>
+        <button id="add-client-button" type="button">+ Add Client</button>
+      </header>
+
+      <section class="clients-panel" aria-labelledby="client-list-title">
+        <h2 class="visually-hidden" id="client-list-title">Client list</h2>
+        <div class="client-list" id="client-list" aria-live="polite">
+          <p class="client-list__message">Loading clients...</p>
+        </div>
       </section>
     </main>
 
