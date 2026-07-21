@@ -16,11 +16,52 @@
       </a>
     </header>
 
-    <main class="placeholder-page" id="main-content">
-      <section class="placeholder-card" aria-labelledby="page-title">
-        <p class="eyebrow">Account access</p>
-        <h1 id="page-title">Welcome back</h1>
-        <p>The login experience will be implemented in the authentication stage.</p>
+    <main class="auth-page" id="main-content">
+      <section class="auth-card" aria-labelledby="page-title">
+        <div class="auth-card__heading">
+          <p class="eyebrow">Account access</p>
+          <h1 id="page-title">Welcome back</h1>
+        </div>
+
+        <form class="auth-form" id="login-form" novalidate>
+          <div class="form-field">
+            <label for="login-email">Email</label>
+            <input
+              id="login-email"
+              name="email"
+              type="text"
+              autocomplete="email"
+              aria-describedby="login-email-error"
+              required
+            >
+            <p class="form-error" id="login-email-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="login-password">Password</label>
+            <input
+              id="login-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              aria-describedby="login-password-error login-credentials-error"
+              required
+            >
+            <p class="form-error" id="login-password-error" aria-live="polite"></p>
+          </div>
+
+          <p
+            class="form-error form-error--summary"
+            id="login-credentials-error"
+            role="alert"
+          ></p>
+
+          <button class="auth-form__submit" type="submit">Log In</button>
+        </form>
+
+        <p class="auth-card__footer">
+          Don't have an account? <a href="signup.html">Sign up</a>
+        </p>
       </section>
     </main>
 
