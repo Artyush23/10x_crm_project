@@ -1,2 +1,315 @@
-// Client management styles are implemented with the Clients features.
+.clients-page {
+  width: min(100%, 75rem);
+  margin: 0 auto;
+  padding: var(--space-10);
+}
+
+.clients-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+
+  h1 {
+    margin: var(--space-2) 0 0;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+}
+
+.clients-panel {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-overlay);
+}
+
+.client-list {
+  display: grid;
+}
+
+.client-list__message {
+  margin: 0;
+  padding: var(--space-12) var(--space-6);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.client-list__error {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: var(--space-12) var(--space-6);
+  color: var(--color-text-muted);
+  text-align: center;
+
+  p {
+    margin: 0;
+  }
+}
+
+.client-card {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1.6fr) minmax(10rem, 1fr) auto auto auto;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.client-card__identity {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.client-card__avatar {
+  position: relative;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface-subtle);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.client-card__name,
+.client-card__company,
+.client-card__email,
+.client-card__deal {
+  overflow: hidden;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.client-card__name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.client-card__company,
+.client-card__email {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.client-card__deal {
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.status-badge {
+  display: inline-flex;
+  min-height: 1.75rem;
+  align-items: center;
+  border: 1px solid currentcolor;
+  border-radius: 999px;
+  padding: 0 var(--space-3);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge--lead {
+  color: var(--color-status-lead);
+}
+
+.status-badge--contacted {
+  color: var(--color-status-contacted);
+}
+
+.status-badge--won {
+  color: var(--color-status-won);
+}
+
+.status-badge--lost {
+  color: var(--color-status-lost);
+}
+
+.client-card__delete,
+.client-list__retry {
+  border-color: var(--color-border-strong);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 0.8125rem;
+}
+
+.client-card__delete {
+  color: var(--color-danger);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.modal-open {
+  overflow: hidden;
+}
+
+.modal-backdrop {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  overflow-y: auto;
+  place-items: center;
+  padding: var(--space-6);
+  background: rgb(0 0 0 / 48%);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.modal {
+  width: min(100%, 36rem);
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-overlay);
+}
+
+.modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-5) var(--space-6);
+
+  h2 {
+    margin: var(--space-1) 0 0;
+    font-size: 1.375rem;
+    font-weight: 500;
+  }
+}
+
+.modal__close {
+  display: grid;
+  width: 2rem;
+  min-height: 2rem;
+  place-items: center;
+  border-color: transparent;
+  padding: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 1.5rem;
+  line-height: 1;
+
+  &:hover {
+    background: var(--color-surface-subtle);
+    color: var(--color-text);
+  }
+}
+
+.client-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  padding: var(--space-6);
+
+  .form-error--summary,
+  .modal__footer {
+    grid-column: 1 / -1;
+  }
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-2) calc(var(--space-6) * -1) calc(var(--space-6) * -1);
+  padding: var(--space-4) var(--space-6);
+}
+
+.button--secondary {
+  border-color: var(--color-border-strong);
+  background: transparent;
+  color: var(--color-text);
+}
+
+@media (max-width: 64rem) {
+  .clients-page {
+    padding: var(--space-8) var(--space-6);
+  }
+
+  .client-card {
+    grid-template-columns: minmax(12rem, 1fr) auto auto auto;
+
+    .client-card__email {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 40rem) {
+  .clients-page {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .clients-page__header {
+    align-items: stretch;
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .client-card {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+
+    .client-card__deal {
+      display: none;
+    }
+  }
+
+  .modal-backdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .modal {
+    max-height: calc(100vh - 1rem);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  .client-form {
+    grid-template-columns: 1fr;
+  }
+}
 

@@ -11,13 +11,138 @@
   <body class="app-layout" data-page="clients">
     <aside class="app-sidebar" data-navigation-root aria-label="Application navigation"></aside>
 
-    <main class="placeholder-page" id="main-content">
-      <section class="placeholder-card" aria-labelledby="page-title">
-        <p class="eyebrow">Customer relationships</p>
-        <h1 id="page-title">Clients</h1>
-        <p>Client loading and management will be implemented in the client stages.</p>
+    <main class="clients-page" id="main-content">
+      <header class="clients-page__header">
+        <div>
+          <p class="eyebrow">Customer relationships</p>
+          <h1 id="page-title">Clients</h1>
+        </div>
+        <button id="add-client-button" type="button">+ Add Client</button>
+      </header>
+
+      <section class="clients-panel" aria-labelledby="client-list-title">
+        <h2 class="visually-hidden" id="client-list-title">Client list</h2>
+        <div class="client-list" id="client-list" aria-live="polite">
+          <p class="client-list__message">Loading clients...</p>
+        </div>
       </section>
     </main>
+
+    <div class="modal-backdrop" id="add-client-modal" aria-hidden="true" hidden>
+      <section
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="add-client-title"
+      >
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">New relationship</p>
+            <h2 id="add-client-title">Add Client</h2>
+          </div>
+          <button
+            class="modal__close"
+            type="button"
+            aria-label="Close Add Client modal"
+            data-modal-close
+          >
+            &times;
+          </button>
+        </header>
+
+        <form class="client-form" id="add-client-form" novalidate>
+          <div class="form-field">
+            <label for="client-name">Name</label>
+            <input
+              id="client-name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              aria-describedby="client-name-error"
+              required
+            >
+            <p class="form-error" id="client-name-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="client-email">Email</label>
+            <input
+              id="client-email"
+              name="email"
+              type="text"
+              autocomplete="email"
+              aria-describedby="client-email-error"
+              required
+            >
+            <p class="form-error" id="client-email-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="client-phone">Phone</label>
+            <input
+              id="client-phone"
+              name="phone"
+              type="tel"
+              autocomplete="tel"
+              aria-describedby="client-phone-error"
+            >
+            <p class="form-error" id="client-phone-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="client-company">Company</label>
+            <input
+              id="client-company"
+              name="company"
+              type="text"
+              autocomplete="organization"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="client-deal-value">Deal Value</label>
+            <input
+              id="client-deal-value"
+              name="dealValue"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="any"
+              aria-describedby="client-deal-value-error"
+              required
+            >
+            <p
+              class="form-error"
+              id="client-deal-value-error"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <div class="form-field">
+            <label for="client-status">Status</label>
+            <select id="client-status" name="status">
+              <option value="Lead" selected>Lead</option>
+              <option value="Contacted">Contacted</option>
+              <option value="Won">Won</option>
+              <option value="Lost">Lost</option>
+            </select>
+          </div>
+
+          <p
+            class="form-error form-error--summary"
+            id="add-client-submit-error"
+            role="alert"
+          ></p>
+
+          <footer class="modal__footer">
+            <button class="button--secondary" type="button" data-modal-close>
+              Cancel
+            </button>
+            <button type="submit">Add Client</button>
+          </footer>
+        </form>
+      </section>
+    </div>
 
     <script type="module" src="js/pages/clients.js"></script>
   </body>
