@@ -1,8 +1,13 @@
 import { requireSession } from "../core/guard.js";
 import { bindModal } from "../core/modal.js";
+import { showToast } from "../core/notifications.js";
 import { initializeTheme } from "../core/theme.js";
 import { initializeNavigation } from "../core/navigation.js";
-import { loadClients } from "../data/clients-repository.js";
+import {
+  addClient,
+  loadClients,
+  saveClients,
+} from "../data/clients-repository.js";
 
 const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -120,13 +125,15 @@ function initializeAddClientModal() {
     phone: document.querySelector("#client-phone-error"),
     dealValue: document.querySelector("#client-deal-value-error"),
   };
+  const submitButton = form.querySelector('button[type="submit"]');
+  const submitError = document.querySelector("#add-client-submit-error");
   const modalController = bindModal({
     modal,
     openButton,
     onClose: () => clearClientForm(form, fields, errorElements),
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const dealValueRaw = fields.dealValue.value.trim();
@@ -154,7 +161,24 @@ function initializeAddClientModal() {
       return;
     }
 
-    document.querySelector("#add-client-submit-error").textContent = "";
+    submitError.textContent = "";
+    submitButton.disabled = true;
+    submitButton.textContent = "Adding...";
+
+    try {
+      const newClient = await addClient(values);
+      clients.unshift(newClient);
+      saveClients(clients);
+      renderClients(clients);
+      modalController.close();
+      showToast("Client added ✓");
+    } catch (error) {
+      console.error("Could not add client.", error);
+      submitError.textContent = "Could not add client. Please try again.";
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Add Client";
+    }
   });
 
   return modalController;

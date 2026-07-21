@@ -49,3 +49,41 @@ export async function loadClients() {
   return clients;
 }
 
+export async function addClient(clientData) {
+  const response = await fetch(`${CLIENTS_ENDPOINT}/add`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      firstName: clientData.name,
+      email: clientData.email,
+      phone: clientData.phone,
+      company: { name: clientData.company },
+      status: clientData.status,
+      dealValue: clientData.dealValue,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Could not add client (${response.status}).`);
+  }
+
+  const addedUser = await response.json();
+
+  if (addedUser.id === undefined || addedUser.id === null) {
+    throw new Error("The added client response did not contain an id.");
+  }
+
+  return {
+    id: addedUser.id,
+    name: clientData.name,
+    email: clientData.email.toLowerCase(),
+    phone: clientData.phone,
+    company: clientData.company,
+    image: addedUser.image ?? "",
+    status: clientData.status,
+    dealValue: clientData.dealValue,
+    notes: [],
+    createdAt: new Date().toISOString(),
+  };
+}
+
