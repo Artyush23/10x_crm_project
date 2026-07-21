@@ -11,12 +11,87 @@
   <body class="app-layout" data-page="dashboard">
     <aside class="app-sidebar" data-navigation-root aria-label="Application navigation"></aside>
 
-    <main class="placeholder-page" id="main-content">
-      <section class="placeholder-card" aria-labelledby="page-title">
-        <p class="eyebrow">Workspace overview</p>
-        <h1 id="page-title">Dashboard</h1>
-        <p>Dashboard metrics and recent clients will be implemented in a later stage.</p>
+    <main class="dashboard-page" id="main-content">
+      <header class="dashboard-hero">
+        <div>
+          <p class="eyebrow">Workspace overview</p>
+          <h1 id="page-title">Welcome back!</h1>
+        </div>
+        <div class="dashboard-clock" aria-label="Current date and time">
+          <time id="current-date">—</time>
+          <time id="live-clock">—</time>
+        </div>
+      </header>
+
+      <p class="dashboard-status" id="dashboard-status" aria-live="polite">
+        Loading dashboard...
+      </p>
+
+      <section class="dashboard-stats" aria-label="CRM statistics">
+        <article class="stat-card">
+          <p>Total Clients</p>
+          <strong data-stat="total-clients">0</strong>
+        </article>
+        <article class="stat-card">
+          <p>Active Deals</p>
+          <strong data-stat="active-deals">0</strong>
+        </article>
+        <article class="stat-card">
+          <p>Won Revenue</p>
+          <strong data-stat="won-revenue">$0</strong>
+        </article>
+        <article class="stat-card">
+          <p>New This Week</p>
+          <strong data-stat="new-this-week">0</strong>
+        </article>
       </section>
+
+      <div class="dashboard-grid">
+        <section class="dashboard-panel" aria-labelledby="pipeline-title">
+          <header class="dashboard-panel__header">
+            <div>
+              <p class="eyebrow">Sales stages</p>
+              <h2 id="pipeline-title">Pipeline Overview</h2>
+            </div>
+          </header>
+
+          <div class="pipeline-list">
+            <article class="pipeline-item pipeline-item--lead">
+              <span>Lead</span>
+              <strong data-pipeline="Lead">0</strong>
+            </article>
+            <article class="pipeline-item pipeline-item--contacted">
+              <span>Contacted</span>
+              <strong data-pipeline="Contacted">0</strong>
+            </article>
+            <article class="pipeline-item pipeline-item--won">
+              <span>Won</span>
+              <strong data-pipeline="Won">0</strong>
+            </article>
+            <article class="pipeline-item pipeline-item--lost">
+              <span>Lost</span>
+              <strong data-pipeline="Lost">0</strong>
+            </article>
+          </div>
+        </section>
+
+        <section class="dashboard-panel" aria-labelledby="recent-clients-title">
+          <header class="dashboard-panel__header">
+            <div>
+              <p class="eyebrow">Latest activity</p>
+              <h2 id="recent-clients-title">Recent Clients</h2>
+            </div>
+          </header>
+
+          <div class="recent-clients" id="recent-clients">
+            <p class="recent-clients__empty">Loading clients...</p>
+          </div>
+
+          <footer class="dashboard-panel__footer">
+            <a href="clients.html">View all clients -&gt;</a>
+          </footer>
+        </section>
+      </div>
     </main>
 
     <script type="module" src="js/pages/dashboard.js"></script>

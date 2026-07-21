@@ -1,2 +1,234 @@
-// Dashboard styles are implemented with the Dashboard feature.
+.dashboard-page {
+  width: min(100%, 75rem);
+  margin: 0 auto;
+  padding: var(--space-10);
+}
+
+.dashboard-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+
+  h1 {
+    margin: var(--space-2) 0 0;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+}
+
+.dashboard-clock {
+  display: grid;
+  justify-items: end;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+
+  #live-clock {
+    color: var(--color-text);
+    font-size: 1.125rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+}
+
+.dashboard-status {
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.stat-card,
+.dashboard-panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-overlay);
+}
+
+.stat-card {
+  padding: var(--space-5);
+
+  p {
+    margin: 0 0 var(--space-2);
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+  }
+
+  strong {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.8fr) minmax(24rem, 1.4fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.dashboard-panel {
+  overflow: hidden;
+}
+
+.dashboard-panel__header {
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-5);
+
+  h2 {
+    margin: var(--space-1) 0 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+}
+
+.pipeline-list {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+}
+
+.pipeline-item {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 3px solid currentcolor;
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-4);
+  background: var(--color-surface-subtle);
+
+  span {
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+  }
+
+  strong {
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.pipeline-item--lead {
+  color: var(--color-status-lead);
+}
+
+.pipeline-item--contacted {
+  color: var(--color-status-contacted);
+}
+
+.pipeline-item--won {
+  color: var(--color-status-won);
+}
+
+.pipeline-item--lost {
+  color: var(--color-status-lost);
+}
+
+.recent-clients {
+  display: grid;
+}
+
+.recent-client {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) auto auto;
+  align-items: center;
+  gap: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-4) var(--space-5);
+}
+
+.recent-client__name,
+.recent-client__company,
+.recent-client__date {
+  overflow: hidden;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-client__name {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.recent-client__company,
+.recent-client__date,
+.recent-clients__empty {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.recent-clients__empty {
+  margin: 0;
+  padding: var(--space-10) var(--space-5);
+  text-align: center;
+}
+
+.dashboard-panel__footer {
+  padding: var(--space-4) var(--space-5);
+  text-align: right;
+
+  a {
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 64rem) {
+  .dashboard-page {
+    padding: var(--space-8) var(--space-6);
+  }
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 40rem) {
+  .dashboard-page {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .dashboard-hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dashboard-clock {
+    justify-items: start;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .recent-client {
+    grid-template-columns: minmax(0, 1fr) auto;
+
+    .recent-client__date {
+      display: none;
+    }
+  }
+}
 
