@@ -23,10 +23,10 @@
 .clients-panel {
   overflow: hidden;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--surface-glass);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--surface-glass), var(--color-surface) 14%);
   box-shadow: var(--shadow-card);
-  backdrop-filter: blur(16px) saturate(135%);
+  backdrop-filter: blur(20px) saturate(145%);
 }
 
 .client-list {
@@ -68,9 +68,9 @@
 
   &:hover {
     z-index: 1;
-    background: color-mix(in srgb, var(--color-primary), transparent 95%);
-    box-shadow: inset 3px 0 0 var(--color-primary);
-    transform: translateX(2px);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--color-info), transparent 94%), color-mix(in srgb, var(--color-accent), transparent 97%));
+    box-shadow: inset 3px 0 0 color-mix(in srgb, var(--color-primary), transparent 12%);
+    transform: translateX(3px);
   }
 
   &:last-child {
@@ -148,12 +148,12 @@
   display: inline-flex;
   min-height: 1.75rem;
   align-items: center;
-  border: 1px solid currentcolor;
+  border: 1px solid color-mix(in srgb, currentcolor, transparent 56%);
   border-radius: 999px;
   padding: 0 var(--space-3);
   font-size: 0.75rem;
   font-weight: 600;
-  background: color-mix(in srgb, currentcolor, transparent 92%);
+  background: color-mix(in srgb, currentcolor, transparent 91%);
 }
 
 .status-badge--lead {
@@ -179,13 +179,15 @@
   gap: var(--space-4);
   border-bottom: 1px solid var(--color-border);
   padding: var(--space-4) var(--space-5);
-  background: linear-gradient(135deg, var(--color-surface-subtle), transparent);
+  background:
+    linear-gradient(135deg, var(--surface-tinted), transparent 76%),
+    color-mix(in srgb, var(--color-surface), transparent 5%);
 }
 
 .clients-toolbar__search input,
 .clients-toolbar__sort select {
   min-height: 2.625rem;
-  background-color: color-mix(in srgb, var(--color-surface), transparent 5%);
+  background-color: color-mix(in srgb, var(--color-surface), transparent 1%);
   font-size: 0.8125rem;
 }
 
@@ -200,7 +202,7 @@
   border-color: var(--color-border-strong);
   border-radius: 999px;
   padding: 0 var(--space-3);
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface), transparent 2%);
   background-image: none;
   box-shadow: none;
   color: var(--color-text-muted);
@@ -210,6 +212,10 @@
     border-color 160ms ease,
     color 160ms ease,
     transform 160ms ease;
+
+  &::before {
+    content: none;
+  }
 
   &:hover:not(:disabled) {
     border-color: var(--color-primary);
@@ -222,7 +228,7 @@
     border-color: var(--color-primary);
     background: var(--gradient-primary);
     color: #ffffff;
-    box-shadow: var(--shadow-button);
+    box-shadow: 0 9px 20px -13px color-mix(in srgb, var(--color-primary), transparent 18%);
   }
 }
 
@@ -230,10 +236,10 @@
   width: auto;
   min-width: 7rem;
   min-height: 2rem;
-  border-color: currentcolor;
+  border-color: color-mix(in srgb, currentcolor, transparent 48%);
   border-radius: 999px;
   padding: 0 var(--space-8) 0 var(--space-3);
-  background-color: color-mix(in srgb, var(--color-surface), transparent 3%);
+  background-color: color-mix(in srgb, var(--color-surface), currentcolor 3%);
   font-size: 0.75rem;
   font-weight: 600;
 }
@@ -246,6 +252,10 @@
   box-shadow: none;
   color: var(--color-text);
   font-size: 0.8125rem;
+
+  &::before {
+    content: none;
+  }
 
   &:hover:not(:disabled) {
     border-color: currentcolor;
@@ -282,8 +292,8 @@
   overflow-y: auto;
   place-items: center;
   padding: var(--space-6);
-  background: rgb(8 9 16 / 62%);
-  backdrop-filter: blur(8px);
+  background: rgb(24 31 55 / 42%);
+  backdrop-filter: blur(10px) saturate(110%);
 
   &[hidden] {
     display: none;
@@ -295,10 +305,10 @@
   max-height: calc(100vh - 3rem);
   overflow-y: auto;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--surface-glass);
+  border-radius: var(--radius-xl);
+  background: var(--gradient-hero);
   box-shadow: var(--shadow-overlay);
-  backdrop-filter: blur(24px) saturate(145%);
+  backdrop-filter: blur(28px) saturate(150%);
 }
 
 .modal__header {
@@ -308,7 +318,7 @@
   gap: var(--space-4);
   border-bottom: 1px solid var(--color-border);
   padding: var(--space-5) var(--space-6);
-  background: linear-gradient(135deg, var(--color-surface-subtle), transparent);
+  background: linear-gradient(135deg, var(--surface-tinted), transparent);
 
   h2 {
     margin: var(--space-1) 0 0;
@@ -330,6 +340,10 @@
   color: var(--color-text-muted);
   font-size: 1.5rem;
   line-height: 1;
+
+  &::before {
+    content: none;
+  }
 
   &:hover {
     background: var(--color-surface-subtle);
@@ -367,6 +381,10 @@
   box-shadow: none;
   color: var(--color-text);
 
+  &::before {
+    content: none;
+  }
+
   &:hover:not(:disabled) {
     border-color: var(--color-primary);
     background: color-mix(in srgb, var(--color-primary), transparent 92%);
@@ -392,7 +410,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-4);
-  background: linear-gradient(135deg, var(--color-surface-subtle), transparent);
+  background: linear-gradient(135deg, var(--surface-tinted), color-mix(in srgb, var(--color-accent-soft), transparent 58%));
 
   h3 {
     margin: 0;
@@ -421,9 +439,10 @@
 
   div {
     min-width: 0;
+    border: 1px solid color-mix(in srgb, var(--color-border), transparent 22%);
     border-radius: var(--radius-sm);
     padding: var(--space-3);
-    background: color-mix(in srgb, var(--color-surface-subtle), transparent 22%);
+    background: color-mix(in srgb, var(--color-surface-subtle), var(--color-surface) 18%);
   }
 
   dt {
@@ -472,7 +491,7 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     padding: var(--space-3);
-    background: var(--color-surface-subtle);
+    background: color-mix(in srgb, var(--color-surface-subtle), var(--color-surface) 16%);
     box-shadow: var(--shadow-sm);
   }
 
@@ -618,9 +637,13 @@
   }
 
   .clients-toolbar__filters {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: var(--space-1);
+    flex-wrap: wrap;
+    gap: var(--space-1);
+
+    .filter-chip {
+      padding-inline: var(--space-2);
+      font-size: 0.6875rem;
+    }
   }
 }
 

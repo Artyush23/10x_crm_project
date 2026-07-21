@@ -14,7 +14,9 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    linear-gradient(145deg, transparent 0 55%, rgb(99 102 241 / 3%) 100%),
+    radial-gradient(circle at 88% -8%, var(--ambient-one), transparent 32rem),
+    radial-gradient(circle at -8% 102%, var(--ambient-warm), transparent 28rem),
+    linear-gradient(145deg, transparent 0 62%, color-mix(in srgb, var(--color-primary), transparent 97%) 100%),
     var(--color-page);
   color: var(--color-text);
   font-family: var(--font-sans);
@@ -33,16 +35,17 @@ textarea {
 
 button,
 .button {
-  min-height: 2.5rem;
-  border: 1px solid transparent;
+  min-height: 2.625rem;
+  border: 1px solid rgb(255 255 255 / 24%);
   border-radius: var(--radius-sm);
   padding: 0 var(--space-4);
   background: var(--gradient-primary);
-  background-size: 160% 160%;
+  background-size: 180% 180%;
   box-shadow: var(--shadow-button);
   color: var(--color-primary-contrast);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 650;
+  letter-spacing: 0.005em;
   transition:
     background-position 180ms ease,
     box-shadow 180ms ease,
@@ -51,8 +54,8 @@ button,
 
   &:hover:not(:disabled) {
     background-position: 100% 50%;
-    box-shadow: 0 14px 30px -15px rgb(79 70 229 / 75%);
-    transform: translateY(-1px);
+    box-shadow: 0 16px 32px -16px color-mix(in srgb, var(--color-primary), transparent 28%);
+    transform: translateY(-2px);
   }
 
   &:active:not(:disabled) {
@@ -72,16 +75,28 @@ textarea {
   width: 100%;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-sm);
-  padding: var(--space-3);
-  background: var(--color-surface);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
+  padding: 0.8125rem 0.875rem;
+  background: color-mix(in srgb, var(--color-surface), transparent 2%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 42%),
+    0 1px 2px rgb(35 48 82 / 3%);
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
     box-shadow 160ms ease;
 
   &:hover:not(:disabled) {
-    border-color: color-mix(in srgb, var(--color-primary), var(--color-border) 62%);
+    border-color: color-mix(in srgb, var(--color-primary), var(--color-border) 58%);
+  }
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-focus), transparent 84%);
+    outline: 0;
+  }
+
+  &::placeholder {
+    color: var(--color-text-subtle);
   }
 }
 
@@ -95,8 +110,8 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--color-focus), transparent 24%);
-  outline-offset: 3px;
+  outline: 3px solid color-mix(in srgb, var(--color-focus), transparent 32%);
+  outline-offset: 2px;
 }
 
 .site-header {
@@ -106,8 +121,8 @@ a {
   border-bottom: 1px solid var(--color-border);
   padding: 0 var(--space-6);
   background: var(--surface-glass);
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 8px 32px -26px rgb(42 58 98 / 55%);
+  backdrop-filter: blur(22px) saturate(150%);
 }
 
 .brand {
@@ -139,10 +154,11 @@ a {
 .placeholder-card {
   width: min(100%, 35rem);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   padding: var(--space-8);
-  background: var(--color-surface);
+  background: var(--surface-glass);
   box-shadow: var(--shadow-overlay);
+  backdrop-filter: blur(20px) saturate(145%);
 
   h1 {
     margin: var(--space-2) 0 var(--space-3);
@@ -160,10 +176,10 @@ a {
 
 .eyebrow {
   margin: 0;
-  color: var(--color-primary);
+  color: var(--color-info);
   font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: 0.095em;
   text-transform: uppercase;
 }
 
@@ -183,10 +199,10 @@ a {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
   border: 1px solid var(--color-border-strong);
-  border-left: 3px solid currentcolor;
+  border-left: 4px solid currentcolor;
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
-  background: var(--surface-glass);
+  background: color-mix(in srgb, var(--surface-glass), var(--color-surface) 22%);
   box-shadow: var(--shadow-overlay);
   color: var(--color-text);
   column-gap: var(--space-3);

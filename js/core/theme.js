@@ -1,4 +1,5 @@
 import { STORAGE_KEYS, THEMES } from "./constants.js";
+import { createIcon } from "./icons.js";
 import { readString, writeString } from "./storage.js";
 
 const SUPPORTED_THEMES = new Set(Object.values(THEMES));
@@ -29,14 +30,19 @@ export function updateThemeToggle(button, theme = getCurrentTheme()) {
 
   const isDark = theme === THEMES.dark;
   const nextTheme = isDark ? THEMES.light : THEMES.dark;
+  const icon = button.querySelector("[data-theme-icon]");
   const label = button.querySelector("[data-theme-label]");
 
   button.setAttribute("aria-pressed", String(isDark));
   button.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
   button.title = `Switch to ${nextTheme} theme`;
 
+  if (icon) {
+    icon.replaceChildren(createIcon(isDark ? "moon" : "sun"));
+  }
+
   if (label) {
-    label.textContent = `${nextTheme === THEMES.dark ? "Dark" : "Light"} mode`;
+    label.textContent = `${isDark ? "Dark" : "Light"} mode`;
   }
 }
 
