@@ -5,6 +5,7 @@ import { showToast } from "../core/notifications.js";
 import { writeJSON } from "../core/storage.js";
 import { initializeTheme } from "../core/theme.js";
 import { initializeNavigation } from "../core/navigation.js";
+import { resetClients } from "../data/clients-repository.js";
 
 let users = [];
 let currentUser = null;
@@ -162,6 +163,36 @@ function initializeChangePasswordForm() {
   });
 }
 
+function initializeDataReset() {
+  const resetButton = document.querySelector("#reset-crm-data");
+
+  resetButton.addEventListener("click", async () => {
+    const confirmed = window.confirm(
+      "Reset CRM data? This will restore the initial clients.",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    resetButton.disabled = true;
+    resetButton.textContent = "Resetting...";
+
+    try {
+      await resetClients();
+      showToast("CRM data reset ✓");
+    } catch (error) {
+      console.error("Could not reset CRM data.", error);
+      showToast("Could not reset CRM data. Please try again.", {
+        type: "error",
+      });
+    } finally {
+      resetButton.disabled = false;
+      resetButton.textContent = "Reset CRM Data";
+    }
+  });
+}
+
 function initializeProfilePage() {
   const user = resolveCurrentUser();
 
@@ -173,6 +204,7 @@ function initializeProfilePage() {
   renderProfile(user);
   initializeEditProfileForm();
   initializeChangePasswordForm();
+  initializeDataReset();
 }
 
 if (requireSession()) {
