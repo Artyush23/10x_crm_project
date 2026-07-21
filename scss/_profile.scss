@@ -179,7 +179,7 @@
   }
 
   &:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--color-danger), #000000 12%);
+    background: color-mix(in srgb, var(--color-danger), #07313d 12%);
     box-shadow: 0 14px 30px -16px color-mix(in srgb, var(--color-danger), transparent 20%);
   }
 }

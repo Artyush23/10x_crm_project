@@ -1,43 +1,43 @@
 :root {
   color-scheme: light;
   --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
-  --color-page: #f5f7fc;
-  --color-page-deep: #edf1f8;
+  --color-page: #f2fbfc;
+  --color-page-deep: #e7f7f8;
   --color-surface: #ffffff;
-  --color-surface-subtle: #f7f8fc;
+  --color-surface-subtle: #effafa;
   --color-surface-elevated: #ffffff;
-  --color-text: #172033;
-  --color-text-muted: #64708b;
-  --color-text-subtle: #8e99ad;
-  --color-border: #e4e9f2;
-  --color-border-strong: #d5ddea;
-  --color-primary: #5268e8;
-  --color-primary-hover: #4357cf;
+  --color-text: #12344a;
+  --color-text-muted: #527487;
+  --color-text-subtle: #7898a7;
+  --color-border: #d7edef;
+  --color-border-strong: #bfdee2;
+  --color-primary: #258bd3;
+  --color-primary-hover: #197abe;
   --color-primary-contrast: #ffffff;
-  --color-accent: #8758e8;
-  --color-accent-soft: #f1edff;
-  --color-info: #3f7ce8;
-  --color-warm: #d98719;
-  --color-focus: #6882ed;
-  --color-success: #15966d;
-  --color-danger: #d34f62;
-  --color-status-lead: #74819a;
-  --color-status-contacted: #4e75df;
-  --color-status-won: #15966d;
-  --color-status-lost: #d34f62;
-  --ambient-one: rgb(82 104 232 / 11%);
-  --ambient-two: rgb(135 88 232 / 8%);
-  --ambient-warm: rgb(245 158 11 / 7%);
-  --surface-glass: rgb(255 255 255 / 86%);
-  --surface-tinted: rgb(248 250 255 / 88%);
-  --gradient-primary: linear-gradient(115deg, #4e7cf0 0%, #665de8 52%, #8658e5 100%);
-  --gradient-primary-hover: linear-gradient(115deg, #3f70df 0%, #574ed7 52%, #7749d5 100%);
-  --gradient-hero: linear-gradient(135deg, rgb(255 255 255 / 94%), rgb(245 247 255 / 90%));
-  --shadow-sm: 0 7px 22px -15px rgb(38 54 93 / 28%);
-  --shadow-card: 0 18px 48px -30px rgb(45 62 109 / 30%), 0 2px 8px rgb(45 62 109 / 5%);
-  --shadow-card-hover: 0 24px 58px -30px rgb(49 66 120 / 38%), 0 5px 16px rgb(49 66 120 / 7%);
-  --shadow-button: 0 12px 25px -14px rgb(82 104 232 / 70%);
-  --shadow-overlay: 0 30px 80px -32px rgb(30 42 76 / 38%);
+  --color-accent: #17a9a3;
+  --color-accent-soft: #def8f4;
+  --color-info: #3a97dc;
+  --color-warm: #e77c67;
+  --color-focus: #37a9d4;
+  --color-success: #159c74;
+  --color-danger: #d85f70;
+  --color-status-lead: #438bc8;
+  --color-status-contacted: #159f9b;
+  --color-status-won: #159c74;
+  --color-status-lost: #d46770;
+  --ambient-one: rgb(57 167 226 / 14%);
+  --ambient-two: rgb(31 190 169 / 12%);
+  --ambient-warm: rgb(241 135 105 / 9%);
+  --surface-glass: rgb(255 255 255 / 88%);
+  --surface-tinted: rgb(237 250 250 / 90%);
+  --gradient-primary: linear-gradient(115deg, #318fe5 0%, #20acc0 52%, #1db493 100%);
+  --gradient-primary-hover: linear-gradient(115deg, #247fd3 0%, #1699aa 52%, #179d81 100%);
+  --gradient-hero: linear-gradient(135deg, rgb(255 255 255 / 96%), rgb(234 249 250 / 92%));
+  --shadow-sm: 0 7px 22px -15px rgb(30 115 140 / 28%);
+  --shadow-card: 0 18px 48px -30px rgb(28 122 149 / 28%), 0 2px 8px rgb(28 122 149 / 5%);
+  --shadow-card-hover: 0 24px 58px -30px rgb(22 130 155 / 36%), 0 5px 16px rgb(22 130 155 / 7%);
+  --shadow-button: 0 12px 25px -14px rgb(24 151 171 / 68%);
+  --shadow-overlay: 0 30px 80px -32px rgb(18 93 116 / 36%);
   --radius-sm: 0.75rem;
   --radius-md: 1rem;
   --radius-lg: 1.375rem;
@@ -55,43 +55,43 @@
 
 [data-theme=dark] {
   color-scheme: dark;
-  --color-page: #10131d;
-  --color-page-deep: #0a0d15;
-  --color-surface: #171b28;
-  --color-surface-subtle: #202535;
-  --color-surface-elevated: #1c2130;
-  --color-text: #f4f6fb;
-  --color-text-muted: #a9b1c4;
-  --color-text-subtle: #7f899f;
-  --color-border: #2b3244;
-  --color-border-strong: #3a4359;
-  --color-primary: #91a4ff;
-  --color-primary-hover: #b0bdff;
-  --color-primary-contrast: #111522;
-  --color-accent: #bd9dff;
-  --color-accent-soft: #29243d;
-  --color-info: #83afff;
-  --color-warm: #f2bd68;
-  --color-focus: #a6b5ff;
-  --color-success: #58d5a7;
-  --color-danger: #fb8193;
-  --color-status-lead: #a4aec1;
-  --color-status-contacted: #9eb0ff;
-  --color-status-won: #58d5a7;
-  --color-status-lost: #fb91a0;
-  --ambient-one: rgb(94 118 255 / 15%);
-  --ambient-two: rgb(165 111 255 / 11%);
-  --ambient-warm: rgb(242 189 104 / 6%);
-  --surface-glass: rgb(23 27 40 / 84%);
-  --surface-tinted: rgb(29 34 49 / 88%);
-  --gradient-primary: linear-gradient(115deg, #82a0ff 0%, #9b83f5 52%, #bd8cf4 100%);
-  --gradient-primary-hover: linear-gradient(115deg, #a1b6ff 0%, #b39dfb 52%, #cea7fb 100%);
-  --gradient-hero: linear-gradient(135deg, rgb(28 33 48 / 94%), rgb(21 25 38 / 92%));
-  --shadow-sm: 0 9px 24px -14px rgb(0 0 0 / 72%);
-  --shadow-card: 0 24px 62px -32px rgb(0 0 0 / 75%), 0 2px 8px rgb(0 0 0 / 28%);
-  --shadow-card-hover: 0 32px 74px -34px rgb(0 0 0 / 82%), 0 6px 18px rgb(0 0 0 / 30%);
-  --shadow-button: 0 14px 30px -15px rgb(127 148 255 / 65%);
-  --shadow-overlay: 0 34px 92px -30px rgb(0 0 0 / 88%);
+  --color-page: #08232d;
+  --color-page-deep: #041720;
+  --color-surface: #0d2c37;
+  --color-surface-subtle: #123844;
+  --color-surface-elevated: #10333f;
+  --color-text: #edfafa;
+  --color-text-muted: #a4c9cc;
+  --color-text-subtle: #78a5ab;
+  --color-border: #214d58;
+  --color-border-strong: #326572;
+  --color-primary: #6cbcec;
+  --color-primary-hover: #8ed1f2;
+  --color-primary-contrast: #052531;
+  --color-accent: #57cfbf;
+  --color-accent-soft: #123f40;
+  --color-info: #70bce8;
+  --color-warm: #e9a08d;
+  --color-focus: #72cede;
+  --color-success: #68d1a9;
+  --color-danger: #ef8c98;
+  --color-status-lead: #82bde5;
+  --color-status-contacted: #66d1c8;
+  --color-status-won: #68d1a9;
+  --color-status-lost: #ed959c;
+  --ambient-one: rgb(67 165 221 / 17%);
+  --ambient-two: rgb(52 198 179 / 13%);
+  --ambient-warm: rgb(233 160 141 / 7%);
+  --surface-glass: rgb(10 42 53 / 86%);
+  --surface-tinted: rgb(13 53 64 / 90%);
+  --gradient-primary: linear-gradient(115deg, #69b6e8 0%, #45bfc0 52%, #55c9a6 100%);
+  --gradient-primary-hover: linear-gradient(115deg, #84c7ef 0%, #62cdca 52%, #6bd5b3 100%);
+  --gradient-hero: linear-gradient(135deg, rgb(15 53 65 / 96%), rgb(8 38 48 / 94%));
+  --shadow-sm: 0 9px 24px -14px rgb(0 11 17 / 72%);
+  --shadow-card: 0 24px 62px -32px rgb(0 9 14 / 78%), 0 2px 8px rgb(0 9 14 / 30%);
+  --shadow-card-hover: 0 32px 74px -34px rgb(0 8 13 / 84%), 0 6px 18px rgb(0 8 13 / 32%);
+  --shadow-button: 0 14px 30px -15px rgb(45 180 181 / 60%);
+  --shadow-overlay: 0 34px 92px -30px rgb(0 8 13 / 88%);
 }
 
 *,
@@ -109,7 +109,7 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background: radial-gradient(circle at 88% -8%, var(--ambient-one), transparent 32rem), radial-gradient(circle at -8% 102%, var(--ambient-warm), transparent 28rem), linear-gradient(145deg, transparent 0 62%, color-mix(in srgb, var(--color-primary), transparent 97%) 100%), var(--color-page);
+  background: radial-gradient(circle at 88% -8%, var(--ambient-one), transparent 32rem), radial-gradient(circle at 8% 12%, var(--ambient-two), transparent 26rem), radial-gradient(circle at -8% 102%, var(--ambient-warm), transparent 28rem), linear-gradient(145deg, transparent 0 62%, color-mix(in srgb, var(--color-primary), transparent 97%) 100%), var(--color-page);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -165,7 +165,7 @@ textarea {
   border-radius: var(--radius-sm);
   padding: 0.8125rem 0.875rem;
   background: color-mix(in srgb, var(--color-surface), transparent 2%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 1px 2px rgba(35, 48, 82, 0.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 1px 2px rgba(18, 91, 111, 0.04);
   transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
 input:hover:not(:disabled),
@@ -205,7 +205,7 @@ a {
   border-bottom: 1px solid var(--color-border);
   padding: 0 var(--space-6);
   background: var(--surface-glass);
-  box-shadow: 0 8px 32px -26px rgba(42, 58, 98, 0.55);
+  box-shadow: 0 8px 32px -26px rgba(24, 118, 143, 0.5);
   backdrop-filter: blur(22px) saturate(150%);
 }
 
@@ -810,7 +810,7 @@ body[data-page] > :not(.toast-region, .modal-backdrop, .app-sidebar) {
     border-bottom: 1px solid var(--color-border);
     border-radius: 0;
     background: color-mix(in srgb, var(--surface-glass), var(--color-surface) 18%);
-    box-shadow: 0 10px 32px -26px rgba(31, 43, 78, 0.52);
+    box-shadow: 0 10px 32px -26px rgba(17, 103, 126, 0.52);
     inset: auto;
   }
   .app-nav {
@@ -1268,7 +1268,7 @@ body[data-page] > :not(.toast-region, .modal-backdrop, .app-sidebar) {
   border: 2px solid color-mix(in srgb, #ffffff, transparent 26%);
   border-radius: 50%;
   background: linear-gradient(var(--avatar-angle, 145deg), hsl(var(--avatar-hue, 248), 72%, 58%), hsl(var(--avatar-hue-alt, 286), 70%, 45%));
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 8px 20px -12px rgba(30, 27, 75, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 8px 20px -12px rgba(7, 69, 82, 0.68);
   color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1448,7 +1448,7 @@ body[data-page] > :not(.toast-region, .modal-backdrop, .app-sidebar) {
   overflow-y: auto;
   place-items: center;
   padding: var(--space-6);
-  background: rgba(24, 31, 55, 0.42);
+  background: rgba(4, 38, 50, 0.44);
   backdrop-filter: blur(10px) saturate(110%);
 }
 .modal-backdrop[hidden] {
@@ -1917,7 +1917,7 @@ body[data-page] > :not(.toast-region, .modal-backdrop, .app-sidebar) {
   content: none;
 }
 .danger-button:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-danger), #000000 12%);
+  background: color-mix(in srgb, var(--color-danger), #07313d 12%);
   box-shadow: 0 14px 30px -16px color-mix(in srgb, var(--color-danger), transparent 20%);
 }
 

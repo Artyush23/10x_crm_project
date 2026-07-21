@@ -1,6 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="logo-title">
   <title id="logo-title">10X CRM</title>
-  <rect width="32" height="32" rx="7" fill="#1c1c1c"/>
+  <defs>
+    <linearGradient id="logo-gradient" x1="3" y1="3" x2="29" y2="29" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#318fe5"/>
+      <stop offset="0.52" stop-color="#20acc0"/>
+      <stop offset="1" stop-color="#1db493"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="url(#logo-gradient)"/>
   <path d="M8 10h3v12H8zm5 0h5.5c3 0 5 1.6 5 4.2 0 1.7-.9 3-2.4 3.7L24 22h-3.6l-2.3-3.5H16V22h-3zm3 2.6v3.3h2.2c1.4 0 2.2-.6 2.2-1.7s-.8-1.6-2.2-1.6z" fill="#fff"/>
 </svg>
 

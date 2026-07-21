@@ -102,7 +102,7 @@
   );
   box-shadow:
     inset 0 0 0 1px rgb(255 255 255 / 18%),
-    0 8px 20px -12px rgb(30 27 75 / 70%);
+    0 8px 20px -12px rgb(7 69 82 / 68%);
   color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
@@ -292,7 +292,7 @@
   overflow-y: auto;
   place-items: center;
   padding: var(--space-6);
-  background: rgb(24 31 55 / 42%);
+  background: rgb(4 38 50 / 44%);
   backdrop-filter: blur(10px) saturate(110%);
 
   &[hidden] {
