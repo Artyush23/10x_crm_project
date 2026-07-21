@@ -160,6 +160,20 @@
           </div>
 
           <div class="form-field">
+            <label for="client-image">Image URL</label>
+            <input
+              id="client-image"
+              name="image"
+              type="url"
+              inputmode="url"
+              autocomplete="url"
+              placeholder="https://example.com/avatar.jpg"
+              aria-describedby="client-image-error"
+            >
+            <p class="form-error" id="client-image-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
             <label for="client-deal-value">Deal Value</label>
             <input
               id="client-deal-value"

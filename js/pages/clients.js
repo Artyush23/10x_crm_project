@@ -31,6 +31,7 @@ const CLIENT_FORM_ERRORS = Object.freeze({
   email: "Please enter a valid email address",
   duplicateEmail: "A client with this email already exists",
   phone: "Phone number looks too short",
+  image: "Image URL must start with http:// or https://",
   dealValue: "Deal value must be a positive number",
 });
 
@@ -52,6 +53,25 @@ function getStatusClass(status) {
   };
 
   return statusClasses[status] ?? statusClasses.Lead;
+}
+
+function getAvatarGradient(client) {
+  const seed = [client.id, client.name, client.email]
+    .map((value) => String(value ?? "").trim().toLowerCase())
+    .join("|");
+  let hash = 2166136261;
+
+  for (let index = 0; index < seed.length; index += 1) {
+    hash ^= seed.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  const normalizedHash = hash >>> 0;
+  const firstHue = normalizedHash % 360;
+  const secondHue = (firstHue + 38 + ((normalizedHash >>> 8) % 67)) % 360;
+  const angle = 115 + ((normalizedHash >>> 16) % 131);
+
+  return { firstHue, secondHue, angle };
 }
 
 function createStatusSelect(client) {
@@ -76,8 +96,12 @@ function createStatusSelect(client) {
 function createClientAvatar(client, className = "client-card__avatar") {
   const avatar = document.createElement("div");
   const initials = document.createElement("span");
+  const gradient = getAvatarGradient(client);
 
   avatar.className = className;
+  avatar.style.setProperty("--avatar-hue", String(gradient.firstHue));
+  avatar.style.setProperty("--avatar-hue-alt", String(gradient.secondHue));
+  avatar.style.setProperty("--avatar-angle", `${gradient.angle}deg`);
   initials.textContent = getInitials(client.name) || "?";
   avatar.append(initials);
 
@@ -85,6 +109,8 @@ function createClientAvatar(client, className = "client-card__avatar") {
     const image = document.createElement("img");
     image.src = client.image;
     image.alt = "";
+    image.decoding = "async";
+    image.loading = "lazy";
     image.addEventListener("error", () => image.remove(), { once: true });
     avatar.append(image);
   }
@@ -182,6 +208,10 @@ function validateClient(values) {
     errors.phone = CLIENT_FORM_ERRORS.phone;
   }
 
+  if (values.image && !/^https?:\/\//i.test(values.image)) {
+    errors.image = CLIENT_FORM_ERRORS.image;
+  }
+
   if (
     !values.dealValueRaw ||
     Number.isNaN(values.dealValue) ||
@@ -201,6 +231,23 @@ function clearClientForm(form, fields, errorElements) {
   document.querySelector("#add-client-submit-error").textContent = "";
 }
 
+function ensureUniqueClientId(client) {
+  if (!clients.some((item) => String(item.id) === String(client.id))) {
+    return client;
+  }
+
+  let suffix = 0;
+  const timestamp = Date.now();
+  let localId = timestamp;
+
+  while (clients.some((item) => String(item.id) === String(localId))) {
+    suffix += 1;
+    localId = timestamp + suffix;
+  }
+
+  return { ...client, id: localId };
+}
+
 function initializeAddClientModal() {
   const modal = document.querySelector("#add-client-modal");
   const openButton = document.querySelector("#add-client-button");
@@ -209,12 +256,14 @@ function initializeAddClientModal() {
     name: form.elements.name,
     email: form.elements.email,
     phone: form.elements.phone,
+    image: form.elements.image,
     dealValue: form.elements.dealValue,
   };
   const errorElements = {
     name: document.querySelector("#client-name-error"),
     email: document.querySelector("#client-email-error"),
     phone: document.querySelector("#client-phone-error"),
+    image: document.querySelector("#client-image-error"),
     dealValue: document.querySelector("#client-deal-value-error"),
   };
   const submitButton = form.querySelector('button[type="submit"]');
@@ -234,6 +283,7 @@ function initializeAddClientModal() {
       email: fields.email.value.trim().toLowerCase(),
       phone: fields.phone.value.trim(),
       company: form.elements.company.value.trim(),
+      image: fields.image.value.trim(),
       dealValueRaw,
       dealValue: Number(dealValueRaw),
       status: form.elements.status.value,
@@ -258,7 +308,7 @@ function initializeAddClientModal() {
     submitButton.textContent = "Adding...";
 
     try {
-      const newClient = await addClient(values);
+      const newClient = ensureUniqueClientId(await addClient(values));
       clients.unshift(newClient);
       saveClients(clients);
       renderVisibleClients();
