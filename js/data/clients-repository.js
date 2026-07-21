@@ -1,5 +1,5 @@
 import { STORAGE_KEYS } from "../core/constants.js";
-import { readJSON, writeJSON } from "../core/storage.js";
+import { readJSON, removeStorageItem, writeJSON } from "../core/storage.js";
 
 const CLIENTS_ENDPOINT = "https://dummyjson.com/users";
 
@@ -96,5 +96,10 @@ export async function deleteClient(clientId) {
   if (!response.ok && response.status !== 404) {
     throw new Error(`Could not delete client (${response.status}).`);
   }
+}
+
+export async function resetClients() {
+  removeStorageItem(STORAGE_KEYS.clients);
+  return loadClients();
 }
 
