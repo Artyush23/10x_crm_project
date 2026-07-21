@@ -1,4 +1,5 @@
 import { requireSession } from "../core/guard.js";
+import { bindModal } from "../core/modal.js";
 import { initializeTheme } from "../core/theme.js";
 import { initializeNavigation } from "../core/navigation.js";
 import { loadClients } from "../data/clients-repository.js";
@@ -10,6 +11,14 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
 });
 
 let clients = [];
+
+const CLIENT_FORM_ERRORS = Object.freeze({
+  name: "Name must be at least 3 characters",
+  email: "Please enter a valid email address",
+  duplicateEmail: "A client with this email already exists",
+  phone: "Phone number looks too short",
+  dealValue: "Deal value must be a positive number",
+});
 
 function getInitials(name) {
   return name
@@ -29,6 +38,126 @@ function getStatusClass(status) {
   };
 
   return statusClasses[status] ?? statusClasses.Lead;
+}
+
+function isValidEmail(email) {
+  const atIndex = email.indexOf("@");
+  const dotIndex = email.indexOf(".", atIndex + 1);
+
+  return (
+    atIndex > 0 &&
+    dotIndex > atIndex + 1 &&
+    dotIndex < email.length - 1
+  );
+}
+
+function setFieldError(input, errorElement, message = "") {
+  input.classList.toggle("input-error", Boolean(message));
+  errorElement.textContent = message;
+
+  if (message) {
+    input.setAttribute("aria-invalid", "true");
+  } else {
+    input.removeAttribute("aria-invalid");
+  }
+}
+
+function validateClient(values) {
+  const errors = {};
+
+  if (values.name.length < 3) {
+    errors.name = CLIENT_FORM_ERRORS.name;
+  }
+
+  if (!isValidEmail(values.email)) {
+    errors.email = CLIENT_FORM_ERRORS.email;
+  } else if (
+    clients.some(
+      (client) =>
+        typeof client.email === "string" &&
+        client.email.toLowerCase() === values.email,
+    )
+  ) {
+    errors.email = CLIENT_FORM_ERRORS.duplicateEmail;
+  }
+
+  if (values.phone && values.phone.length < 6) {
+    errors.phone = CLIENT_FORM_ERRORS.phone;
+  }
+
+  if (
+    !values.dealValueRaw ||
+    Number.isNaN(values.dealValue) ||
+    values.dealValue <= 0
+  ) {
+    errors.dealValue = CLIENT_FORM_ERRORS.dealValue;
+  }
+
+  return errors;
+}
+
+function clearClientForm(form, fields, errorElements) {
+  form.reset();
+  Object.keys(fields).forEach((fieldName) => {
+    setFieldError(fields[fieldName], errorElements[fieldName]);
+  });
+  document.querySelector("#add-client-submit-error").textContent = "";
+}
+
+function initializeAddClientModal() {
+  const modal = document.querySelector("#add-client-modal");
+  const openButton = document.querySelector("#add-client-button");
+  const form = document.querySelector("#add-client-form");
+  const fields = {
+    name: form.elements.name,
+    email: form.elements.email,
+    phone: form.elements.phone,
+    dealValue: form.elements.dealValue,
+  };
+  const errorElements = {
+    name: document.querySelector("#client-name-error"),
+    email: document.querySelector("#client-email-error"),
+    phone: document.querySelector("#client-phone-error"),
+    dealValue: document.querySelector("#client-deal-value-error"),
+  };
+  const modalController = bindModal({
+    modal,
+    openButton,
+    onClose: () => clearClientForm(form, fields, errorElements),
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const dealValueRaw = fields.dealValue.value.trim();
+    const values = {
+      name: fields.name.value.trim(),
+      email: fields.email.value.trim().toLowerCase(),
+      phone: fields.phone.value.trim(),
+      company: form.elements.company.value.trim(),
+      dealValueRaw,
+      dealValue: Number(dealValueRaw),
+      status: form.elements.status.value,
+    };
+    const errors = validateClient(values);
+
+    Object.keys(fields).forEach((fieldName) => {
+      setFieldError(
+        fields[fieldName],
+        errorElements[fieldName],
+        errors[fieldName],
+      );
+    });
+
+    if (Object.keys(errors).length) {
+      fields[Object.keys(errors)[0]].focus();
+      return;
+    }
+
+    document.querySelector("#add-client-submit-error").textContent = "";
+  });
+
+  return modalController;
 }
 
 function createClientCard(client) {
@@ -145,6 +274,7 @@ async function initializeClientList() {
 if (requireSession()) {
   initializeTheme();
   initializeNavigation();
+  initializeAddClientModal();
   initializeClientList();
 }
 
