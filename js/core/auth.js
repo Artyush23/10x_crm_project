@@ -32,6 +32,17 @@ export function registerUser({ fullName, email, password, company }) {
   return user;
 }
 
+export function createSession(user) {
+  const session = {
+    userId: user.id,
+    email: user.email,
+    loginAt: new Date().toISOString(),
+  };
+
+  writeJSON(STORAGE_KEYS.session, session);
+  return session;
+}
+
 export function getSession() {
   const session = readJSON(STORAGE_KEYS.session, null);
   const hasValidUserId =

@@ -1,4 +1,4 @@
-import { findUserByEmail } from "../core/auth.js";
+import { createSession, findUserByEmail } from "../core/auth.js";
 import { redirectAuthenticatedUser } from "../core/guard.js";
 import { initializeTheme } from "../core/theme.js";
 
@@ -58,7 +58,11 @@ function initializeLoginForm() {
       emailInput.setAttribute("aria-invalid", "true");
       passwordInput.setAttribute("aria-invalid", "true");
       emailInput.focus();
+      return;
     }
+
+    createSession(user);
+    window.location.href = "dashboard.html";
   });
 }
 
