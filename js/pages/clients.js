@@ -24,7 +24,6 @@ let clients = [];
 let activeStatusFilter = "All";
 let searchTerm = "";
 let sortMode = "newest";
-let selectedClientId = null;
 let detailsModalController = null;
 
 const CLIENT_FORM_ERRORS = Object.freeze({
@@ -421,6 +420,27 @@ function createNotesSection(client) {
   return section;
 }
 
+function createReminderAction(client) {
+  const actions = document.createElement("div");
+  const reminderButton = document.createElement("button");
+
+  actions.className = "client-details__actions";
+  reminderButton.className = "button--secondary";
+  reminderButton.type = "button";
+  reminderButton.textContent = "Remind me in 1 min";
+  reminderButton.addEventListener("click", () => {
+    const clientName = client.name;
+    showToast("Reminder set ✓");
+
+    window.setTimeout(() => {
+      showToast(`Follow up: ${clientName}`);
+    }, 60000);
+  });
+
+  actions.append(reminderButton);
+  return actions;
+}
+
 function renderClientDetails(client) {
   const content = document.querySelector("#client-details-content");
   const identity = document.createElement("div");
@@ -465,7 +485,12 @@ function renderClientDetails(client) {
     formatClientSince(client.createdAt),
   );
 
-  content.replaceChildren(identity, detailsList, createNotesSection(client));
+  content.replaceChildren(
+    identity,
+    detailsList,
+    createReminderAction(client),
+    createNotesSection(client),
+  );
 }
 
 function openClientDetails(clientId) {
@@ -475,7 +500,6 @@ function openClientDetails(clientId) {
     return;
   }
 
-  selectedClientId = clientId;
   renderClientDetails(client);
   detailsModalController.open();
 }
@@ -485,7 +509,6 @@ function initializeClientDetailsModal() {
   detailsModalController = bindModal({
     modal,
     onClose: () => {
-      selectedClientId = null;
       document.querySelector("#client-details-content").replaceChildren();
     },
   });

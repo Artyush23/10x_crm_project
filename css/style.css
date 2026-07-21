@@ -845,6 +845,11 @@ a {
   font-size: 0.875rem;
 }
 
+.client-details__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .client-notes {
   display: grid;
   gap: var(--space-4);
