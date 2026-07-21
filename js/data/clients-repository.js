@@ -87,3 +87,14 @@ export async function addClient(clientData) {
   };
 }
 
+export async function deleteClient(clientId) {
+  const response = await fetch(
+    `${CLIENTS_ENDPOINT}/${encodeURIComponent(clientId)}`,
+    { method: "DELETE" },
+  );
+
+  if (!response.ok && response.status !== 404) {
+    throw new Error(`Could not delete client (${response.status}).`);
+  }
+}
+

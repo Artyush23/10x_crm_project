@@ -5,6 +5,7 @@ import { initializeTheme } from "../core/theme.js";
 import { initializeNavigation } from "../core/navigation.js";
 import {
   addClient,
+  deleteClient,
   loadClients,
   saveClients,
 } from "../data/clients-repository.js";
@@ -279,6 +280,47 @@ function renderLoadError() {
   listElement.replaceChildren(errorState);
 }
 
+function initializeClientActions() {
+  const listElement = document.querySelector("#client-list");
+
+  listElement.addEventListener("click", async (event) => {
+    const deleteButton = event.target.closest(
+      '[data-action="delete-client"]',
+    );
+
+    if (!deleteButton || !listElement.contains(deleteButton)) {
+      return;
+    }
+
+    const clientId = deleteButton.dataset.id;
+    const confirmed = window.confirm(
+      "Delete this client? This cannot be undone.",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    deleteButton.disabled = true;
+    deleteButton.textContent = "Deleting...";
+
+    try {
+      await deleteClient(clientId);
+      clients = clients.filter((client) => String(client.id) !== clientId);
+      saveClients(clients);
+      renderClients(clients);
+      showToast("Client deleted");
+    } catch (error) {
+      console.error("Could not delete client.", error);
+      deleteButton.disabled = false;
+      deleteButton.textContent = "Delete";
+      showToast("Could not delete client. Please try again.", {
+        type: "error",
+      });
+    }
+  });
+}
+
 async function initializeClientList() {
   const listElement = document.querySelector("#client-list");
   const loadingMessage = document.createElement("p");
@@ -299,6 +341,7 @@ if (requireSession()) {
   initializeTheme();
   initializeNavigation();
   initializeAddClientModal();
+  initializeClientActions();
   initializeClientList();
 }
 
