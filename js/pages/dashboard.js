@@ -1,2 +1,4 @@
-// Dashboard page behavior will be implemented in the Dashboard stage.
+import { initializeTheme } from "../core/theme.js";
+
+initializeTheme();
 

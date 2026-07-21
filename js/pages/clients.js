@@ -1,2 +1,4 @@
-// Clients page behavior will be implemented in the Clients stages.
+import { initializeTheme } from "../core/theme.js";
+
+initializeTheme();
 

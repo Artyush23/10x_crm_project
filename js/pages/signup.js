@@ -1,2 +1,4 @@
-// Sign-up page behavior will be implemented in the authentication stage.
+import { initializeTheme } from "../core/theme.js";
+
+initializeTheme();
 

@@ -1,2 +1,4 @@
-// Profile page behavior will be implemented in the Profile stage.
+import { initializeTheme } from "../core/theme.js";
+
+initializeTheme();
 
