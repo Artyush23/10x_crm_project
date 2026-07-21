@@ -16,11 +16,83 @@
       </a>
     </header>
 
-    <main class="placeholder-page" id="main-content">
-      <section class="placeholder-card" aria-labelledby="page-title">
-        <p class="eyebrow">New workspace</p>
-        <h1 id="page-title">Create your account</h1>
-        <p>The registration experience will be implemented in the authentication stage.</p>
+    <main class="auth-page" id="main-content">
+      <section class="auth-card" aria-labelledby="page-title">
+        <div class="auth-card__heading">
+          <p class="eyebrow">New workspace</p>
+          <h1 id="page-title">Create your account</h1>
+        </div>
+
+        <form class="auth-form" id="signup-form" novalidate>
+          <div class="form-field">
+            <label for="full-name">Full Name</label>
+            <input
+              id="full-name"
+              name="fullName"
+              type="text"
+              autocomplete="name"
+              aria-describedby="full-name-error"
+              required
+            >
+            <p class="form-error" id="full-name-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="signup-email">Email</label>
+            <input
+              id="signup-email"
+              name="email"
+              type="text"
+              autocomplete="email"
+              aria-describedby="signup-email-error"
+              required
+            >
+            <p class="form-error" id="signup-email-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="company">Company</label>
+            <input
+              id="company"
+              name="company"
+              type="text"
+              autocomplete="organization"
+              placeholder="Company (optional)"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="signup-password">Password</label>
+            <input
+              id="signup-password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              aria-describedby="signup-password-error"
+              required
+            >
+            <p class="form-error" id="signup-password-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="confirm-password">Confirm Password</label>
+            <input
+              id="confirm-password"
+              name="confirmPassword"
+              type="password"
+              autocomplete="new-password"
+              aria-describedby="confirm-password-error"
+              required
+            >
+            <p class="form-error" id="confirm-password-error" aria-live="polite"></p>
+          </div>
+
+          <button class="auth-form__submit" type="submit">Create Account</button>
+        </form>
+
+        <p class="auth-card__footer">
+          Already have an account? <a href="index.html">Log in</a>
+        </p>
       </section>
     </main>
 

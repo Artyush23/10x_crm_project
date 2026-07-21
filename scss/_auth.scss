@@ -1,2 +1,107 @@
-// Authentication page styles are implemented in a later stage.
+.auth-page {
+  display: grid;
+  min-height: calc(100vh - 4rem);
+  place-items: center;
+  padding: var(--space-8) var(--space-4);
+}
+
+.auth-card {
+  width: min(100%, 26.25rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-8);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-overlay);
+}
+
+.auth-card__heading {
+  margin-bottom: var(--space-6);
+
+  h1 {
+    margin: var(--space-2) 0 0;
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+}
+
+.auth-form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.form-field {
+  display: grid;
+  gap: var(--space-2);
+
+  label {
+    color: var(--color-text);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  input {
+    min-height: 2.75rem;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+
+    &::placeholder {
+      color: var(--color-text-subtle);
+    }
+
+    &:focus {
+      border-color: var(--color-text);
+      box-shadow: 0 0 0 1px var(--color-text);
+      outline: 0;
+    }
+
+    &.input-error {
+      border-color: var(--color-danger);
+      box-shadow: 0 0 0 1px var(--color-danger);
+    }
+  }
+}
+
+.form-error {
+  min-height: 1.125rem;
+  margin: calc(var(--space-1) * -1) 0 0;
+  color: var(--color-danger);
+  font-size: 0.75rem;
+  line-height: 1.5;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.auth-form__submit {
+  width: 100%;
+  margin-top: var(--space-2);
+  font-weight: 600;
+}
+
+.auth-card__footer {
+  margin: var(--space-6) 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  text-align: center;
+
+  a {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 30rem) {
+  .auth-page {
+    align-items: start;
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .auth-card {
+    padding: var(--space-6);
+  }
+}
 
