@@ -1,0 +1,14 @@
+{
+  "name": "10x-crm-project",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sass:build": "sass scss/style.scss css/style.css --no-source-map --style=expanded",
+    "sass:watch": "sass --watch scss/style.scss css/style.css --no-source-map --style=expanded"
+  },
+  "devDependencies": {
+    "sass": "^1.80.0"
+  }
+}
+
