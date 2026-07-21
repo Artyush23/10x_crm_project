@@ -11,11 +11,153 @@
   <body class="app-layout" data-page="profile">
     <aside class="app-sidebar" data-navigation-root aria-label="Application navigation"></aside>
 
-    <main class="placeholder-page" id="main-content">
-      <section class="placeholder-card" aria-labelledby="page-title">
+    <main class="profile-page" id="main-content">
+      <header class="profile-page__header">
         <p class="eyebrow">Account settings</p>
         <h1 id="page-title">Profile</h1>
-        <p>Profile information and account controls will be implemented in a later stage.</p>
+      </header>
+
+      <section class="profile-summary" aria-labelledby="profile-summary-title">
+        <div class="profile-avatar" id="profile-avatar" aria-hidden="true">?</div>
+        <div class="profile-summary__identity">
+          <h2 id="profile-summary-title">Your profile</h2>
+          <p id="profile-name">—</p>
+        </div>
+
+        <dl class="profile-summary__details">
+          <div>
+            <dt>Full Name</dt>
+            <dd id="profile-full-name">—</dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd id="profile-email">—</dd>
+          </div>
+          <div>
+            <dt>Company</dt>
+            <dd id="profile-company">—</dd>
+          </div>
+          <div>
+            <dt>Member since</dt>
+            <dd id="profile-member-since">—</dd>
+          </div>
+        </dl>
+      </section>
+
+      <div class="profile-grid">
+        <section class="profile-panel" aria-labelledby="edit-profile-title">
+          <header class="profile-panel__header">
+            <p class="eyebrow">Personal information</p>
+            <h2 id="edit-profile-title">Edit Profile</h2>
+          </header>
+
+          <form class="profile-form" id="edit-profile-form" novalidate>
+            <div class="form-field">
+              <label for="profile-full-name-input">Full Name</label>
+              <input
+                id="profile-full-name-input"
+                name="fullName"
+                type="text"
+                autocomplete="name"
+                aria-describedby="profile-full-name-error"
+                required
+              >
+              <p
+                class="form-error"
+                id="profile-full-name-error"
+                aria-live="polite"
+              ></p>
+            </div>
+
+            <div class="form-field">
+              <label for="profile-company-input">Company</label>
+              <input
+                id="profile-company-input"
+                name="company"
+                type="text"
+                autocomplete="organization"
+              >
+            </div>
+
+            <button type="submit">Save Changes</button>
+          </form>
+        </section>
+
+        <section class="profile-panel" aria-labelledby="change-password-title">
+          <header class="profile-panel__header">
+            <p class="eyebrow">Security</p>
+            <h2 id="change-password-title">Change Password</h2>
+          </header>
+
+          <form class="profile-form" id="change-password-form" novalidate>
+            <div class="form-field">
+              <label for="current-password">Current Password</label>
+              <input
+                id="current-password"
+                name="currentPassword"
+                type="password"
+                autocomplete="current-password"
+                aria-describedby="current-password-error"
+                required
+              >
+              <p
+                class="form-error"
+                id="current-password-error"
+                aria-live="polite"
+              ></p>
+            </div>
+
+            <div class="form-field">
+              <label for="new-password">New Password</label>
+              <input
+                id="new-password"
+                name="newPassword"
+                type="password"
+                autocomplete="new-password"
+                aria-describedby="new-password-error"
+                required
+              >
+              <p
+                class="form-error"
+                id="new-password-error"
+                aria-live="polite"
+              ></p>
+            </div>
+
+            <div class="form-field">
+              <label for="confirm-new-password">Confirm New Password</label>
+              <input
+                id="confirm-new-password"
+                name="confirmNewPassword"
+                type="password"
+                autocomplete="new-password"
+                aria-describedby="confirm-new-password-error"
+                required
+              >
+              <p
+                class="form-error"
+                id="confirm-new-password-error"
+                aria-live="polite"
+              ></p>
+            </div>
+
+            <button type="submit">Change Password</button>
+          </form>
+        </section>
+      </div>
+
+      <section class="profile-panel profile-panel--danger" aria-labelledby="data-management-title">
+        <div>
+          <p class="eyebrow">Data management</p>
+          <h2 id="data-management-title">Reset client data</h2>
+          <p>
+            Remove local client changes and restore the initial 30 clients.
+            Your account, session, and theme will be preserved.
+          </p>
+        </div>
+        <button class="danger-button" id="reset-crm-data" type="button">
+          Reset CRM Data
+        </button>
       </section>
     </main>
 
