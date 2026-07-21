@@ -1,5 +1,5 @@
 .app-layout {
-  padding-left: 15rem;
+  padding-left: 17rem;
 
   .placeholder-page {
     min-height: 100vh;
@@ -9,10 +9,14 @@
 .app-sidebar {
   position: fixed;
   z-index: 10;
-  inset: 0 auto 0 0;
-  width: 15rem;
-  border-right: 1px solid var(--color-border);
-  background: var(--color-surface);
+  inset: var(--space-3) auto var(--space-3) var(--space-3);
+  width: 15.5rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-glass);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(20px) saturate(140%);
 }
 
 .app-nav {
@@ -26,11 +30,16 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-10);
   padding: var(--space-2);
   color: var(--color-text);
   font-weight: 600;
   text-decoration: none;
+  transition: transform 180ms ease;
+
+  &:hover {
+    transform: translateX(2px);
+  }
 
   img {
     display: block;
@@ -54,7 +63,7 @@
   min-height: 2.5rem;
   align-items: center;
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: 0.75rem;
   padding: 0 var(--space-3);
   background: transparent;
   color: var(--color-text-muted);
@@ -62,23 +71,36 @@
   font-weight: 500;
   text-align: left;
   text-decoration: none;
+  box-shadow: none;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 
   &:hover {
     background: var(--color-surface-subtle);
     color: var(--color-text);
     opacity: 1;
+    transform: translateX(2px);
   }
 }
 
 .app-nav__link.is-active {
-  border-color: var(--color-border);
-  background: var(--color-surface-subtle);
-  color: var(--color-text);
+  border-color: color-mix(in srgb, var(--color-primary), transparent 65%);
+  background: color-mix(in srgb, var(--color-primary), transparent 88%);
+  color: var(--color-primary);
+  box-shadow: inset 3px 0 0 var(--color-primary);
 }
 
 .app-nav__action {
   width: 100%;
   cursor: pointer;
+  background-image: none;
+
+  &:active:not(:disabled) {
+    transform: translateX(2px) scale(0.99);
+  }
 }
 
 .app-nav__action--danger {
@@ -95,10 +117,14 @@
   }
 
   .app-sidebar {
-    position: static;
+    position: sticky;
+    top: 0;
     width: 100%;
     border-right: 0;
     border-bottom: 1px solid var(--color-border);
+    border-radius: 0;
+    box-shadow: var(--shadow-sm);
+    inset: auto;
   }
 
   .app-nav {

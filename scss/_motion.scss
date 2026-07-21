@@ -1,0 +1,167 @@
+body[data-page] {
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+
+  &::before,
+  &::after {
+    position: fixed;
+    z-index: 0;
+    width: 34rem;
+    height: 34rem;
+    border-radius: 50%;
+    content: "";
+    filter: blur(2px);
+    pointer-events: none;
+  }
+
+  &::before {
+    top: -17rem;
+    right: -12rem;
+    background: radial-gradient(circle, var(--ambient-one), transparent 68%);
+    animation: ambient-drift-one 20s ease-in-out infinite alternate;
+  }
+
+  &::after {
+    bottom: -20rem;
+    left: -14rem;
+    background: radial-gradient(circle, var(--ambient-two), transparent 68%);
+    animation: ambient-drift-two 24s ease-in-out infinite alternate;
+  }
+
+  > :not(.toast-region, .modal-backdrop) {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+[data-page="login"],
+[data-page="signup"] {
+  &::before {
+    top: -12rem;
+    right: -8rem;
+  }
+
+  &::after {
+    bottom: -15rem;
+    left: -9rem;
+  }
+}
+
+.auth-card,
+.dashboard-hero,
+.dashboard-panel,
+.clients-panel,
+.profile-summary,
+.profile-panel {
+  animation: surface-enter 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.stat-card,
+.pipeline-item,
+.recent-client,
+.client-card {
+  animation: item-enter 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.stat-card:nth-child(2),
+.pipeline-item:nth-child(2),
+.recent-client:nth-child(2),
+.client-card:nth-child(2) {
+  animation-delay: 45ms;
+}
+
+.stat-card:nth-child(3),
+.pipeline-item:nth-child(3),
+.recent-client:nth-child(3),
+.client-card:nth-child(3) {
+  animation-delay: 90ms;
+}
+
+.stat-card:nth-child(4),
+.pipeline-item:nth-child(4),
+.recent-client:nth-child(4),
+.client-card:nth-child(4) {
+  animation-delay: 135ms;
+}
+
+.recent-client:nth-child(5),
+.client-card:nth-child(5) {
+  animation-delay: 180ms;
+}
+
+.modal {
+  animation: modal-enter 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.toast {
+  animation: toast-enter 220ms ease-out both;
+}
+
+@keyframes ambient-drift-one {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(-3rem, 2.5rem, 0) scale(1.08);
+  }
+}
+
+@keyframes ambient-drift-two {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.04);
+  }
+
+  to {
+    transform: translate3d(3.5rem, -2rem, 0) scale(0.96);
+  }
+}
+
+@keyframes surface-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes item-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0.5rem, -0.25rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
