@@ -11,6 +11,11 @@ let currentUser = null;
 
 const PROFILE_ERRORS = Object.freeze({
   fullName: "Full name must be at least 3 characters",
+  currentPassword: "Current password is incorrect",
+  password:
+    "Password must be at least 8 characters and contain a letter and a number",
+  samePassword: "New password must be different from the current one",
+  confirmPassword: "Passwords do not match",
 });
 
 function getInitials(fullName) {
@@ -94,6 +99,69 @@ function initializeEditProfileForm() {
   });
 }
 
+function isValidPassword(password) {
+  return (
+    password.length >= 8 && /[A-Za-z]/.test(password) && /\d/.test(password)
+  );
+}
+
+function initializeChangePasswordForm() {
+  const form = document.querySelector("#change-password-form");
+  const fields = {
+    currentPassword: form.elements.currentPassword,
+    newPassword: form.elements.newPassword,
+    confirmNewPassword: form.elements.confirmNewPassword,
+  };
+  const errorElements = {
+    currentPassword: document.querySelector("#current-password-error"),
+    newPassword: document.querySelector("#new-password-error"),
+    confirmNewPassword: document.querySelector("#confirm-new-password-error"),
+  };
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const values = {
+      currentPassword: fields.currentPassword.value,
+      newPassword: fields.newPassword.value,
+      confirmNewPassword: fields.confirmNewPassword.value,
+    };
+    const errors = {};
+
+    if (values.currentPassword !== currentUser.password) {
+      errors.currentPassword = PROFILE_ERRORS.currentPassword;
+    }
+
+    if (!isValidPassword(values.newPassword)) {
+      errors.newPassword = PROFILE_ERRORS.password;
+    } else if (values.newPassword === currentUser.password) {
+      errors.newPassword = PROFILE_ERRORS.samePassword;
+    }
+
+    if (values.confirmNewPassword !== values.newPassword) {
+      errors.confirmNewPassword = PROFILE_ERRORS.confirmPassword;
+    }
+
+    Object.keys(fields).forEach((fieldName) => {
+      setFieldError(
+        fields[fieldName],
+        errorElements[fieldName],
+        errors[fieldName],
+      );
+    });
+
+    if (Object.keys(errors).length) {
+      fields[Object.keys(errors)[0]].focus();
+      return;
+    }
+
+    currentUser.password = values.newPassword;
+    saveUsers();
+    form.reset();
+    showToast("Password changed ✓");
+  });
+}
+
 function initializeProfilePage() {
   const user = resolveCurrentUser();
 
@@ -104,6 +172,7 @@ function initializeProfilePage() {
 
   renderProfile(user);
   initializeEditProfileForm();
+  initializeChangePasswordForm();
 }
 
 if (requireSession()) {
