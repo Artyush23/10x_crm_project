@@ -18,6 +18,9 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
 const ALLOWED_STATUSES = Object.freeze(["Lead", "Contacted", "Won", "Lost"]);
 
 let clients = [];
+let activeStatusFilter = "All";
+let searchTerm = "";
+let sortMode = "newest";
 
 const CLIENT_FORM_ERRORS = Object.freeze({
   name: "Name must be at least 3 characters",
@@ -64,6 +67,51 @@ function createStatusSelect(client) {
   });
 
   return select;
+}
+
+export function getVisibleClients() {
+  let visibleClients = [...clients];
+
+  if (activeStatusFilter !== "All") {
+    visibleClients = visibleClients.filter(
+      (client) => client.status === activeStatusFilter,
+    );
+  }
+
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+  if (normalizedSearchTerm) {
+    visibleClients = visibleClients.filter((client) => {
+      const name = String(client.name ?? "").toLowerCase();
+      const company = String(client.company ?? "").toLowerCase();
+      return (
+        name.includes(normalizedSearchTerm) ||
+        company.includes(normalizedSearchTerm)
+      );
+    });
+  }
+
+  if (sortMode === "name") {
+    visibleClients.sort((first, second) =>
+      String(first.name).localeCompare(String(second.name)),
+    );
+  } else if (sortMode === "deal-value") {
+    visibleClients.sort(
+      (first, second) => Number(second.dealValue) - Number(first.dealValue),
+    );
+  } else {
+    visibleClients.sort(
+      (first, second) =>
+        new Date(second.createdAt).getTime() -
+        new Date(first.createdAt).getTime(),
+    );
+  }
+
+  return visibleClients;
+}
+
+function renderVisibleClients() {
+  renderClients(getVisibleClients());
 }
 
 function isValidEmail(email) {
@@ -190,7 +238,7 @@ function initializeAddClientModal() {
       const newClient = await addClient(values);
       clients.unshift(newClient);
       saveClients(clients);
-      renderClients(clients);
+      renderVisibleClients();
       modalController.close();
       showToast("Client added ✓");
     } catch (error) {
@@ -325,7 +373,7 @@ function initializeClientActions() {
       await deleteClient(clientId);
       clients = clients.filter((client) => String(client.id) !== clientId);
       saveClients(clients);
-      renderClients(clients);
+      renderVisibleClients();
       showToast("Client deleted");
     } catch (error) {
       console.error("Could not delete client.", error);
@@ -355,7 +403,44 @@ function initializeClientActions() {
 
     client.status = newStatus;
     saveClients(clients);
-    renderClients(clients);
+    renderVisibleClients();
+  });
+}
+
+function initializeClientToolbar() {
+  const searchInput = document.querySelector("#client-search");
+  const filterButtons = document.querySelectorAll("[data-status-filter]");
+  const sortSelect = document.querySelector("#client-sort");
+
+  searchInput.addEventListener("input", () => {
+    searchTerm = searchInput.value;
+    renderVisibleClients();
+  });
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const requestedStatus = button.dataset.statusFilter;
+
+      if (
+        requestedStatus !== "All" &&
+        !ALLOWED_STATUSES.includes(requestedStatus)
+      ) {
+        return;
+      }
+
+      activeStatusFilter = requestedStatus;
+      filterButtons.forEach((filterButton) => {
+        const isActive = filterButton === button;
+        filterButton.classList.toggle("is-active", isActive);
+        filterButton.setAttribute("aria-pressed", String(isActive));
+      });
+      renderVisibleClients();
+    });
+  });
+
+  sortSelect.addEventListener("change", () => {
+    sortMode = sortSelect.value;
+    renderVisibleClients();
   });
 }
 
@@ -368,7 +453,7 @@ async function initializeClientList() {
 
   try {
     clients = await loadClients();
-    renderClients(clients);
+    renderVisibleClients();
   } catch (error) {
     console.error("Could not initialize clients.", error);
     renderLoadError();
@@ -380,6 +465,7 @@ if (requireSession()) {
   initializeNavigation();
   initializeAddClientModal();
   initializeClientActions();
+  initializeClientToolbar();
   initializeClientList();
 }
 
