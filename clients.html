@@ -21,6 +21,66 @@
       </header>
 
       <section class="clients-panel" aria-labelledby="client-list-title">
+        <div class="clients-toolbar">
+          <div class="clients-toolbar__search">
+            <label class="visually-hidden" for="client-search">
+              Search clients by name or company
+            </label>
+            <input
+              id="client-search"
+              type="search"
+              placeholder="Search by name or company"
+              autocomplete="off"
+            >
+          </div>
+
+          <div
+            class="clients-toolbar__filters"
+            role="group"
+            aria-label="Filter clients by status"
+          >
+            <button
+              class="filter-chip is-active"
+              type="button"
+              data-status-filter="All"
+              aria-pressed="true"
+            >All</button>
+            <button
+              class="filter-chip"
+              type="button"
+              data-status-filter="Lead"
+              aria-pressed="false"
+            >Lead</button>
+            <button
+              class="filter-chip"
+              type="button"
+              data-status-filter="Contacted"
+              aria-pressed="false"
+            >Contacted</button>
+            <button
+              class="filter-chip"
+              type="button"
+              data-status-filter="Won"
+              aria-pressed="false"
+            >Won</button>
+            <button
+              class="filter-chip"
+              type="button"
+              data-status-filter="Lost"
+              aria-pressed="false"
+            >Lost</button>
+          </div>
+
+          <div class="clients-toolbar__sort">
+            <label class="visually-hidden" for="client-sort">Sort clients</label>
+            <select id="client-sort">
+              <option value="newest" selected>Newest first</option>
+              <option value="name">Name A-&gt;Z</option>
+              <option value="deal-value">Deal value: high -&gt; low</option>
+            </select>
+          </div>
+        </div>
+
         <h2 class="visually-hidden" id="client-list-title">Client list</h2>
         <div class="client-list" id="client-list" aria-live="polite">
           <p class="client-list__message">Loading clients...</p>
@@ -141,6 +201,37 @@
             <button type="submit">Add Client</button>
           </footer>
         </form>
+      </section>
+    </div>
+
+    <div
+      class="modal-backdrop"
+      id="client-details-modal"
+      aria-hidden="true"
+      hidden
+    >
+      <section
+        class="modal modal--details"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="client-details-title"
+      >
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Relationship overview</p>
+            <h2 id="client-details-title">Client details</h2>
+          </div>
+          <button
+            class="modal__close"
+            type="button"
+            aria-label="Close client details"
+            data-modal-close
+          >
+            &times;
+          </button>
+        </header>
+
+        <div class="client-details" id="client-details-content"></div>
       </section>
     </div>
 

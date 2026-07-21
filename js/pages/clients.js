@@ -15,8 +15,16 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
   currency: "USD",
   maximumFractionDigits: 0,
 });
+const CLIENT_SINCE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+});
+const ALLOWED_STATUSES = Object.freeze(["Lead", "Contacted", "Won", "Lost"]);
 
 let clients = [];
+let activeStatusFilter = "All";
+let searchTerm = "";
+let sortMode = "newest";
+let detailsModalController = null;
 
 const CLIENT_FORM_ERRORS = Object.freeze({
   name: "Name must be at least 3 characters",
@@ -44,6 +52,89 @@ function getStatusClass(status) {
   };
 
   return statusClasses[status] ?? statusClasses.Lead;
+}
+
+function createStatusSelect(client) {
+  const select = document.createElement("select");
+
+  select.className = `client-card__status ${getStatusClass(client.status)}`;
+  select.dataset.action = "change-status";
+  select.dataset.id = String(client.id);
+  select.setAttribute("aria-label", `Status for ${client.name}`);
+
+  ALLOWED_STATUSES.forEach((status) => {
+    const option = document.createElement("option");
+    option.value = status;
+    option.textContent = status;
+    option.selected = status === client.status;
+    select.append(option);
+  });
+
+  return select;
+}
+
+function createClientAvatar(client, className = "client-card__avatar") {
+  const avatar = document.createElement("div");
+  const initials = document.createElement("span");
+
+  avatar.className = className;
+  initials.textContent = getInitials(client.name) || "?";
+  avatar.append(initials);
+
+  if (client.image) {
+    const image = document.createElement("img");
+    image.src = client.image;
+    image.alt = "";
+    image.addEventListener("error", () => image.remove(), { once: true });
+    avatar.append(image);
+  }
+
+  return avatar;
+}
+
+export function getVisibleClients() {
+  let visibleClients = [...clients];
+
+  if (activeStatusFilter !== "All") {
+    visibleClients = visibleClients.filter(
+      (client) => client.status === activeStatusFilter,
+    );
+  }
+
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+  if (normalizedSearchTerm) {
+    visibleClients = visibleClients.filter((client) => {
+      const name = String(client.name ?? "").toLowerCase();
+      const company = String(client.company ?? "").toLowerCase();
+      return (
+        name.includes(normalizedSearchTerm) ||
+        company.includes(normalizedSearchTerm)
+      );
+    });
+  }
+
+  if (sortMode === "name") {
+    visibleClients.sort((first, second) =>
+      String(first.name).localeCompare(String(second.name)),
+    );
+  } else if (sortMode === "deal-value") {
+    visibleClients.sort(
+      (first, second) => Number(second.dealValue) - Number(first.dealValue),
+    );
+  } else {
+    visibleClients.sort(
+      (first, second) =>
+        new Date(second.createdAt).getTime() -
+        new Date(first.createdAt).getTime(),
+    );
+  }
+
+  return visibleClients;
+}
+
+function renderVisibleClients() {
+  renderClients(getVisibleClients());
 }
 
 function isValidEmail(email) {
@@ -170,7 +261,7 @@ function initializeAddClientModal() {
       const newClient = await addClient(values);
       clients.unshift(newClient);
       saveClients(clients);
-      renderClients(clients);
+      renderVisibleClients();
       modalController.close();
       showToast("Client added ✓");
     } catch (error) {
@@ -188,31 +279,20 @@ function initializeAddClientModal() {
 function createClientCard(client) {
   const card = document.createElement("article");
   const identity = document.createElement("div");
-  const avatar = document.createElement("div");
-  const initials = document.createElement("span");
+  const avatar = createClientAvatar(client);
   const identityText = document.createElement("div");
   const name = document.createElement("h3");
   const company = document.createElement("p");
   const email = document.createElement("p");
-  const status = document.createElement("span");
+  const statusSelect = createStatusSelect(client);
   const dealValue = document.createElement("p");
   const deleteButton = document.createElement("button");
 
   card.className = "client-card";
   card.dataset.id = String(client.id);
+  card.setAttribute("aria-label", `View details for ${client.name}`);
 
   identity.className = "client-card__identity";
-  avatar.className = "client-card__avatar";
-  initials.textContent = getInitials(client.name) || "?";
-  avatar.append(initials);
-
-  if (client.image) {
-    const image = document.createElement("img");
-    image.src = client.image;
-    image.alt = "";
-    image.addEventListener("error", () => image.remove(), { once: true });
-    avatar.append(image);
-  }
 
   name.className = "client-card__name";
   name.textContent = client.name;
@@ -224,9 +304,6 @@ function createClientCard(client) {
   email.className = "client-card__email";
   email.textContent = client.email;
 
-  status.className = `status-badge ${getStatusClass(client.status)}`;
-  status.textContent = client.status;
-
   dealValue.className = "client-card__deal";
   dealValue.textContent = CURRENCY_FORMATTER.format(client.dealValue);
 
@@ -237,8 +314,204 @@ function createClientCard(client) {
   deleteButton.textContent = "Delete";
   deleteButton.setAttribute("aria-label", `Delete ${client.name}`);
 
-  card.append(identity, email, status, dealValue, deleteButton);
+  card.append(identity, email, statusSelect, dealValue, deleteButton);
   return card;
+}
+
+function formatClientSince(createdAt) {
+  const date = new Date(createdAt);
+  return Number.isNaN(date.getTime())
+    ? "Unknown"
+    : CLIENT_SINCE_FORMATTER.format(date);
+}
+
+function appendDetail(detailsList, label, value) {
+  const item = document.createElement("div");
+  const term = document.createElement("dt");
+  const description = document.createElement("dd");
+
+  term.textContent = label;
+  description.textContent = value || "Not provided";
+  item.append(term, description);
+  detailsList.append(item);
+}
+
+function createNotesSection(client) {
+  const section = document.createElement("section");
+  const heading = document.createElement("h4");
+  const notesContainer = document.createElement("div");
+  const form = document.createElement("form");
+  const label = document.createElement("label");
+  const input = document.createElement("textarea");
+  const error = document.createElement("p");
+  const submitButton = document.createElement("button");
+  const notes = Array.isArray(client.notes) ? client.notes : [];
+
+  section.className = "client-notes";
+  heading.textContent = "Notes";
+  notesContainer.className = "client-notes__list";
+
+  if (notes.length) {
+    const list = document.createElement("ol");
+
+    notes.forEach((note) => {
+      const item = document.createElement("li");
+      const text = document.createElement("p");
+      const date = document.createElement("time");
+      text.textContent = note.text;
+      date.textContent = note.date;
+      item.append(text, date);
+      list.append(item);
+    });
+
+    notesContainer.append(list);
+  } else {
+    const emptyMessage = document.createElement("p");
+    emptyMessage.className = "client-notes__empty";
+    emptyMessage.textContent = "No notes yet.";
+    notesContainer.append(emptyMessage);
+  }
+
+  form.className = "client-notes__form";
+  label.className = "visually-hidden";
+  label.htmlFor = "client-note-text";
+  label.textContent = `Add a note for ${client.name}`;
+
+  input.id = "client-note-text";
+  input.name = "note";
+  input.rows = 3;
+  input.placeholder = "Add a note";
+  input.setAttribute("aria-describedby", "client-note-error");
+
+  error.className = "form-error";
+  error.id = "client-note-error";
+  error.setAttribute("aria-live", "polite");
+
+  submitButton.type = "submit";
+  submitButton.textContent = "Add note";
+
+  form.append(label, input, error, submitButton);
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const noteText = input.value.trim();
+
+    if (!noteText) {
+      input.classList.add("input-error");
+      input.setAttribute("aria-invalid", "true");
+      error.textContent = "Note cannot be empty.";
+      input.focus();
+      return;
+    }
+
+    if (!Array.isArray(client.notes)) {
+      client.notes = [];
+    }
+
+    client.notes.push({
+      text: noteText,
+      date: new Date().toLocaleString(),
+    });
+    saveClients(clients);
+    renderClientDetails(client);
+  });
+
+  section.append(heading, notesContainer, form);
+  return section;
+}
+
+function createReminderAction(client) {
+  const actions = document.createElement("div");
+  const reminderButton = document.createElement("button");
+
+  actions.className = "client-details__actions";
+  reminderButton.className = "button--secondary";
+  reminderButton.type = "button";
+  reminderButton.textContent = "Remind me in 1 min";
+  reminderButton.addEventListener("click", () => {
+    const clientName = client.name;
+    showToast("Reminder set ✓");
+
+    window.setTimeout(() => {
+      showToast(`Follow up: ${clientName}`);
+    }, 60000);
+  });
+
+  actions.append(reminderButton);
+  return actions;
+}
+
+function renderClientDetails(client) {
+  const content = document.querySelector("#client-details-content");
+  const identity = document.createElement("div");
+  const avatar = createClientAvatar(
+    client,
+    "client-card__avatar client-details__avatar",
+  );
+  const identityText = document.createElement("div");
+  const name = document.createElement("h3");
+  const company = document.createElement("p");
+  const detailsList = document.createElement("dl");
+  const statusItem = document.createElement("div");
+  const statusTerm = document.createElement("dt");
+  const statusDescription = document.createElement("dd");
+  const status = document.createElement("span");
+
+  identity.className = "client-details__identity";
+  name.textContent = client.name;
+  company.textContent = client.company || "No company";
+  identityText.append(name, company);
+  identity.append(avatar, identityText);
+
+  detailsList.className = "client-details__list";
+  appendDetail(detailsList, "Email", client.email);
+  appendDetail(detailsList, "Phone", client.phone);
+
+  statusTerm.textContent = "Status";
+  status.className = `status-badge ${getStatusClass(client.status)}`;
+  status.textContent = client.status;
+  statusDescription.append(status);
+  statusItem.append(statusTerm, statusDescription);
+  detailsList.append(statusItem);
+
+  appendDetail(
+    detailsList,
+    "Deal value",
+    CURRENCY_FORMATTER.format(client.dealValue),
+  );
+  appendDetail(
+    detailsList,
+    "Client since",
+    formatClientSince(client.createdAt),
+  );
+
+  content.replaceChildren(
+    identity,
+    detailsList,
+    createReminderAction(client),
+    createNotesSection(client),
+  );
+}
+
+function openClientDetails(clientId) {
+  const client = clients.find((item) => String(item.id) === clientId);
+
+  if (!client || !detailsModalController) {
+    return;
+  }
+
+  renderClientDetails(client);
+  detailsModalController.open();
+}
+
+function initializeClientDetailsModal() {
+  const modal = document.querySelector("#client-details-modal");
+  detailsModalController = bindModal({
+    modal,
+    onClose: () => {
+      document.querySelector("#client-details-content").replaceChildren();
+    },
+  });
 }
 
 export function renderClients(list) {
@@ -289,6 +562,14 @@ function initializeClientActions() {
     );
 
     if (!deleteButton || !listElement.contains(deleteButton)) {
+      const interactiveElement = event.target.closest(
+        "button, select, input, textarea, a",
+      );
+      const card = event.target.closest(".client-card");
+
+      if (!interactiveElement && card && listElement.contains(card)) {
+        openClientDetails(card.dataset.id);
+      }
       return;
     }
 
@@ -308,7 +589,7 @@ function initializeClientActions() {
       await deleteClient(clientId);
       clients = clients.filter((client) => String(client.id) !== clientId);
       saveClients(clients);
-      renderClients(clients);
+      renderVisibleClients();
       showToast("Client deleted");
     } catch (error) {
       console.error("Could not delete client.", error);
@@ -318,6 +599,64 @@ function initializeClientActions() {
         type: "error",
       });
     }
+  });
+
+  listElement.addEventListener("change", (event) => {
+    const statusSelect = event.target.closest('[data-action="change-status"]');
+
+    if (!statusSelect || !listElement.contains(statusSelect)) {
+      return;
+    }
+
+    const client = clients.find(
+      (item) => String(item.id) === statusSelect.dataset.id,
+    );
+    const newStatus = statusSelect.value;
+
+    if (!client || !ALLOWED_STATUSES.includes(newStatus)) {
+      return;
+    }
+
+    client.status = newStatus;
+    saveClients(clients);
+    renderVisibleClients();
+  });
+}
+
+function initializeClientToolbar() {
+  const searchInput = document.querySelector("#client-search");
+  const filterButtons = document.querySelectorAll("[data-status-filter]");
+  const sortSelect = document.querySelector("#client-sort");
+
+  searchInput.addEventListener("input", () => {
+    searchTerm = searchInput.value;
+    renderVisibleClients();
+  });
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const requestedStatus = button.dataset.statusFilter;
+
+      if (
+        requestedStatus !== "All" &&
+        !ALLOWED_STATUSES.includes(requestedStatus)
+      ) {
+        return;
+      }
+
+      activeStatusFilter = requestedStatus;
+      filterButtons.forEach((filterButton) => {
+        const isActive = filterButton === button;
+        filterButton.classList.toggle("is-active", isActive);
+        filterButton.setAttribute("aria-pressed", String(isActive));
+      });
+      renderVisibleClients();
+    });
+  });
+
+  sortSelect.addEventListener("change", () => {
+    sortMode = sortSelect.value;
+    renderVisibleClients();
   });
 }
 
@@ -330,7 +669,7 @@ async function initializeClientList() {
 
   try {
     clients = await loadClients();
-    renderClients(clients);
+    renderVisibleClients();
   } catch (error) {
     console.error("Could not initialize clients.", error);
     renderLoadError();
@@ -341,7 +680,9 @@ if (requireSession()) {
   initializeTheme();
   initializeNavigation();
   initializeAddClientModal();
+  initializeClientDetailsModal();
   initializeClientActions();
+  initializeClientToolbar();
   initializeClientList();
 }
 
