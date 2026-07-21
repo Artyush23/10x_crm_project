@@ -337,6 +337,90 @@ function appendDetail(detailsList, label, value) {
   detailsList.append(item);
 }
 
+function createNotesSection(client) {
+  const section = document.createElement("section");
+  const heading = document.createElement("h4");
+  const notesContainer = document.createElement("div");
+  const form = document.createElement("form");
+  const label = document.createElement("label");
+  const input = document.createElement("textarea");
+  const error = document.createElement("p");
+  const submitButton = document.createElement("button");
+  const notes = Array.isArray(client.notes) ? client.notes : [];
+
+  section.className = "client-notes";
+  heading.textContent = "Notes";
+  notesContainer.className = "client-notes__list";
+
+  if (notes.length) {
+    const list = document.createElement("ol");
+
+    notes.forEach((note) => {
+      const item = document.createElement("li");
+      const text = document.createElement("p");
+      const date = document.createElement("time");
+      text.textContent = note.text;
+      date.textContent = note.date;
+      item.append(text, date);
+      list.append(item);
+    });
+
+    notesContainer.append(list);
+  } else {
+    const emptyMessage = document.createElement("p");
+    emptyMessage.className = "client-notes__empty";
+    emptyMessage.textContent = "No notes yet.";
+    notesContainer.append(emptyMessage);
+  }
+
+  form.className = "client-notes__form";
+  label.className = "visually-hidden";
+  label.htmlFor = "client-note-text";
+  label.textContent = `Add a note for ${client.name}`;
+
+  input.id = "client-note-text";
+  input.name = "note";
+  input.rows = 3;
+  input.placeholder = "Add a note";
+  input.setAttribute("aria-describedby", "client-note-error");
+
+  error.className = "form-error";
+  error.id = "client-note-error";
+  error.setAttribute("aria-live", "polite");
+
+  submitButton.type = "submit";
+  submitButton.textContent = "Add note";
+
+  form.append(label, input, error, submitButton);
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const noteText = input.value.trim();
+
+    if (!noteText) {
+      input.classList.add("input-error");
+      input.setAttribute("aria-invalid", "true");
+      error.textContent = "Note cannot be empty.";
+      input.focus();
+      return;
+    }
+
+    if (!Array.isArray(client.notes)) {
+      client.notes = [];
+    }
+
+    client.notes.push({
+      text: noteText,
+      date: new Date().toLocaleString(),
+    });
+    saveClients(clients);
+    renderClientDetails(client);
+  });
+
+  section.append(heading, notesContainer, form);
+  return section;
+}
+
 function renderClientDetails(client) {
   const content = document.querySelector("#client-details-content");
   const identity = document.createElement("div");
@@ -381,7 +465,7 @@ function renderClientDetails(client) {
     formatClientSince(client.createdAt),
   );
 
-  content.replaceChildren(identity, detailsList);
+  content.replaceChildren(identity, detailsList, createNotesSection(client));
 }
 
 function openClientDetails(clientId) {
