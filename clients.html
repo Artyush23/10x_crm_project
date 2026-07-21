@@ -204,6 +204,37 @@
       </section>
     </div>
 
+    <div
+      class="modal-backdrop"
+      id="client-details-modal"
+      aria-hidden="true"
+      hidden
+    >
+      <section
+        class="modal modal--details"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="client-details-title"
+      >
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Relationship overview</p>
+            <h2 id="client-details-title">Client details</h2>
+          </div>
+          <button
+            class="modal__close"
+            type="button"
+            aria-label="Close client details"
+            data-modal-close
+          >
+            &times;
+          </button>
+        </header>
+
+        <div class="client-details" id="client-details-content"></div>
+      </section>
+    </div>
+
     <script type="module" src="js/pages/clients.js"></script>
   </body>
 </html>

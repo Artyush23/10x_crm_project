@@ -59,6 +59,12 @@
   gap: var(--space-5);
   padding: var(--space-4) var(--space-5);
   border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background-color 140ms ease;
+
+  &:hover {
+    background: var(--color-surface-subtle);
+  }
 
   &:last-child {
     border-bottom: 0;
@@ -313,6 +319,66 @@
   color: var(--color-text);
 }
 
+.modal--details {
+  width: min(100%, 40rem);
+}
+
+.client-details {
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-6);
+}
+
+.client-details__identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-muted);
+  }
+}
+
+.client-details__avatar {
+  width: 4rem;
+  height: 4rem;
+  flex: 0 0 auto;
+  font-size: 1rem;
+}
+
+.client-details__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin: 0;
+
+  div {
+    min-width: 0;
+  }
+
+  dt {
+    margin-bottom: var(--space-1);
+    color: var(--color-text-subtle);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    overflow-wrap: anywhere;
+    margin: 0;
+    font-size: 0.875rem;
+  }
+}
+
 @media (max-width: 64rem) {
   .clients-page {
     padding: var(--space-8) var(--space-6);
@@ -383,6 +449,10 @@
   }
 
   .client-form {
+    grid-template-columns: 1fr;
+  }
+
+  .client-details__list {
     grid-template-columns: 1fr;
   }
 }

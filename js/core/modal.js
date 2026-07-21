@@ -28,7 +28,7 @@ export function closeModal(modal = activeModal) {
 }
 
 export function bindModal({ modal, openButton, onClose }) {
-  if (!modal || !openButton) {
+  if (!modal) {
     return null;
   }
 
@@ -37,7 +37,7 @@ export function bindModal({ modal, openButton, onClose }) {
     onClose?.();
   };
 
-  openButton.addEventListener("click", () => {
+  openButton?.addEventListener("click", () => {
     openModal(modal, modal.querySelector("input"));
   });
 
