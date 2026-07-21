@@ -16,6 +16,12 @@ const PIPELINE_STATUSES = Object.freeze([
   "Won",
   "Lost",
 ]);
+const STATUS_CLASS_NAMES = Object.freeze({
+  Lead: "status-badge--lead",
+  Contacted: "status-badge--contacted",
+  Won: "status-badge--won",
+  Lost: "status-badge--lost",
+});
 
 function getCurrentUser() {
   const session = getSession();
@@ -107,17 +113,92 @@ function renderDashboardMetrics(clients) {
   });
 }
 
+function getCreatedTime(client) {
+  const createdTime = new Date(client.createdAt).getTime();
+  return Number.isFinite(createdTime) ? createdTime : 0;
+}
+
+export function getRecentClients(clients) {
+  return [...clients]
+    .sort((first, second) => getCreatedTime(second) - getCreatedTime(first))
+    .slice(0, 5);
+}
+
+function createRecentClientRow(client) {
+  const row = document.createElement("article");
+  const identity = document.createElement("div");
+  const name = document.createElement("h3");
+  const company = document.createElement("p");
+  const status = document.createElement("span");
+  const date = document.createElement("time");
+  const createdDate = new Date(client.createdAt);
+
+  row.className = "recent-client";
+  identity.className = "recent-client__identity";
+  name.className = "recent-client__name";
+  name.textContent = client.name;
+  company.className = "recent-client__company";
+  company.textContent = client.company || "No company";
+  identity.append(name, company);
+
+  status.className = `status-badge ${
+    STATUS_CLASS_NAMES[client.status] ?? STATUS_CLASS_NAMES.Lead
+  }`;
+  status.textContent = client.status;
+
+  date.className = "recent-client__date";
+  if (Number.isNaN(createdDate.getTime())) {
+    date.textContent = "Unknown date";
+  } else {
+    date.dateTime = createdDate.toISOString();
+    date.textContent = createdDate.toLocaleDateString();
+  }
+
+  row.append(identity, status, date);
+  return row;
+}
+
+function renderRecentClients(clients) {
+  const container = document.querySelector("#recent-clients");
+  const recentClients = getRecentClients(clients);
+  container.replaceChildren();
+
+  if (!recentClients.length) {
+    const emptyMessage = document.createElement("p");
+    emptyMessage.className = "recent-clients__empty";
+    emptyMessage.textContent = "No clients yet.";
+    container.append(emptyMessage);
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  recentClients.forEach((client) => {
+    fragment.append(createRecentClientRow(client));
+  });
+  container.append(fragment);
+}
+
+function renderRecentClientsError() {
+  const container = document.querySelector("#recent-clients");
+  const message = document.createElement("p");
+  message.className = "recent-clients__empty";
+  message.textContent = "Recent clients are unavailable.";
+  container.replaceChildren(message);
+}
+
 async function initializeDashboardData() {
   const statusElement = document.querySelector("#dashboard-status");
 
   try {
     const clients = await loadClients();
     renderDashboardMetrics(clients);
+    renderRecentClients(clients);
     statusElement.textContent = "";
   } catch (error) {
     console.error("Could not initialize dashboard data.", error);
     statusElement.textContent =
       "Could not load dashboard data. Check your connection and try again.";
+    renderRecentClientsError();
   }
 }
 
