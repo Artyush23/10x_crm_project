@@ -1,6 +1,6 @@
 import { redirectAuthenticatedUser } from "../core/guard.js";
-import { STORAGE_KEYS } from "../core/constants.js";
-import { readJSON } from "../core/storage.js";
+import { getUsers, registerUser } from "../core/auth.js";
+import { showToast } from "../core/notifications.js";
 import { initializeTheme } from "../core/theme.js";
 
 const SIGNUP_ERRORS = Object.freeze({
@@ -11,11 +11,6 @@ const SIGNUP_ERRORS = Object.freeze({
     "Password must be at least 8 characters and contain a letter and a number",
   confirmPassword: "Passwords do not match",
 });
-
-function getStoredUsers() {
-  const users = readJSON(STORAGE_KEYS.users, []);
-  return Array.isArray(users) ? users : [];
-}
 
 function isValidEmail(email) {
   const atIndex = email.indexOf("@");
@@ -101,10 +96,11 @@ function initializeSignupForm() {
     const values = {
       fullName: fields.fullName.value.trim(),
       email: fields.email.value.trim().toLowerCase(),
+      company: form.elements.company.value.trim(),
       password: fields.password.value,
       confirmPassword: fields.confirmPassword.value,
     };
-    const errors = validateSignup(values, getStoredUsers());
+    const errors = validateSignup(values, getUsers());
 
     Object.keys(fields).forEach((fieldName) => {
       setFieldError(
@@ -116,7 +112,16 @@ function initializeSignupForm() {
 
     if (Object.keys(errors).length) {
       fields[Object.keys(errors)[0]].focus();
+      return;
     }
+
+    registerUser(values);
+    form.querySelector('button[type="submit"]').disabled = true;
+    showToast("Account created successfully! Please log in.");
+
+    window.setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1500);
   });
 }
 
