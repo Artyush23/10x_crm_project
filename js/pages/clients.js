@@ -1,2 +1,9 @@
-// Clients page behavior will be implemented in the Clients stages.
+import { requireSession } from "../core/guard.js";
+import { initializeTheme } from "../core/theme.js";
+import { initializeNavigation } from "../core/navigation.js";
+
+if (requireSession()) {
+  initializeTheme();
+  initializeNavigation();
+}
 

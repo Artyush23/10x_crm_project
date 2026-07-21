@@ -1,2 +1,137 @@
-// Protected application shell styles are implemented in a later stage.
+.app-layout {
+  padding-left: 15rem;
+
+  .placeholder-page {
+    min-height: 100vh;
+  }
+}
+
+.app-sidebar {
+  position: fixed;
+  z-index: 10;
+  inset: 0 auto 0 0;
+  width: 15rem;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.app-nav {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: var(--space-4);
+}
+
+.app-nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+  padding: var(--space-2);
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+
+  img {
+    display: block;
+    border-radius: var(--radius-md);
+  }
+}
+
+.app-nav__links,
+.app-nav__actions {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.app-nav__actions {
+  margin-top: auto;
+}
+
+.app-nav__link,
+.app-nav__action {
+  display: flex;
+  min-height: 2.5rem;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-3);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+
+  &:hover {
+    background: var(--color-surface-subtle);
+    color: var(--color-text);
+    opacity: 1;
+  }
+}
+
+.app-nav__link.is-active {
+  border-color: var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text);
+}
+
+.app-nav__action {
+  width: 100%;
+  cursor: pointer;
+}
+
+.app-nav__action--danger {
+  color: var(--color-danger);
+}
+
+@media (max-width: 48rem) {
+  .app-layout {
+    padding-left: 0;
+
+    .placeholder-page {
+      min-height: calc(100vh - 8rem);
+    }
+  }
+
+  .app-sidebar {
+    position: static;
+    width: 100%;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .app-nav {
+    height: auto;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .app-nav__brand {
+    margin: 0 auto 0 0;
+  }
+
+  .app-nav__links,
+  .app-nav__actions {
+    display: flex;
+    margin: 0;
+  }
+
+  .app-nav__action {
+    width: auto;
+  }
+}
+
+@media (max-width: 36rem) {
+  .app-nav__links {
+    order: 3;
+    width: 100%;
+
+    .app-nav__link {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+}
 

@@ -1,2 +1,7 @@
-// Login page behavior will be implemented in the authentication stage.
+import { redirectAuthenticatedUser } from "../core/guard.js";
+import { initializeTheme } from "../core/theme.js";
+
+if (!redirectAuthenticatedUser()) {
+  initializeTheme();
+}
 
