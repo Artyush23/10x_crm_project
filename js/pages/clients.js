@@ -15,6 +15,7 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
   currency: "USD",
   maximumFractionDigits: 0,
 });
+const ALLOWED_STATUSES = Object.freeze(["Lead", "Contacted", "Won", "Lost"]);
 
 let clients = [];
 
@@ -44,6 +45,25 @@ function getStatusClass(status) {
   };
 
   return statusClasses[status] ?? statusClasses.Lead;
+}
+
+function createStatusSelect(client) {
+  const select = document.createElement("select");
+
+  select.className = `client-card__status ${getStatusClass(client.status)}`;
+  select.dataset.action = "change-status";
+  select.dataset.id = String(client.id);
+  select.setAttribute("aria-label", `Status for ${client.name}`);
+
+  ALLOWED_STATUSES.forEach((status) => {
+    const option = document.createElement("option");
+    option.value = status;
+    option.textContent = status;
+    option.selected = status === client.status;
+    select.append(option);
+  });
+
+  return select;
 }
 
 function isValidEmail(email) {
@@ -194,7 +214,7 @@ function createClientCard(client) {
   const name = document.createElement("h3");
   const company = document.createElement("p");
   const email = document.createElement("p");
-  const status = document.createElement("span");
+  const statusSelect = createStatusSelect(client);
   const dealValue = document.createElement("p");
   const deleteButton = document.createElement("button");
 
@@ -224,9 +244,6 @@ function createClientCard(client) {
   email.className = "client-card__email";
   email.textContent = client.email;
 
-  status.className = `status-badge ${getStatusClass(client.status)}`;
-  status.textContent = client.status;
-
   dealValue.className = "client-card__deal";
   dealValue.textContent = CURRENCY_FORMATTER.format(client.dealValue);
 
@@ -237,7 +254,7 @@ function createClientCard(client) {
   deleteButton.textContent = "Delete";
   deleteButton.setAttribute("aria-label", `Delete ${client.name}`);
 
-  card.append(identity, email, status, dealValue, deleteButton);
+  card.append(identity, email, statusSelect, dealValue, deleteButton);
   return card;
 }
 
@@ -318,6 +335,27 @@ function initializeClientActions() {
         type: "error",
       });
     }
+  });
+
+  listElement.addEventListener("change", (event) => {
+    const statusSelect = event.target.closest('[data-action="change-status"]');
+
+    if (!statusSelect || !listElement.contains(statusSelect)) {
+      return;
+    }
+
+    const client = clients.find(
+      (item) => String(item.id) === statusSelect.dataset.id,
+    );
+    const newStatus = statusSelect.value;
+
+    if (!client || !ALLOWED_STATUSES.includes(newStatus)) {
+      return;
+    }
+
+    client.status = newStatus;
+    saveClients(clients);
+    renderClients(clients);
   });
 }
 
