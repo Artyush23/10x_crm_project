@@ -1,8 +1,8 @@
 :root {
   color-scheme: light;
   --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
-  --color-page: #f2fbfc;
-  --color-page-deep: #e7f7f8;
+  --color-page: #f5fbf8;
+  --color-page-deep: #e8f7f5;
   --color-surface: #ffffff;
   --color-surface-subtle: #effafa;
   --color-surface-elevated: #ffffff;
@@ -28,6 +28,15 @@
   --ambient-one: rgb(57 167 226 / 14%);
   --ambient-two: rgb(31 190 169 / 12%);
   --ambient-warm: rgb(241 135 105 / 9%);
+  --background-canvas:
+    linear-gradient(135deg, #f7fcf9 0%, #eefafa 42%, #fff8ef 100%);
+  --background-aqua: rgb(53 205 195 / 24%);
+  --background-sky: rgb(76 169 230 / 23%);
+  --background-mint: rgb(83 211 158 / 18%);
+  --background-peach: rgb(239 137 111 / 17%);
+  --background-cream: rgb(255 241 213 / 62%);
+  --background-violet: rgb(132 120 222 / 8%);
+  --background-blob-opacity: 0.72;
   --surface-glass: rgb(255 255 255 / 88%);
   --surface-tinted: rgb(237 250 250 / 90%);
   --gradient-primary: linear-gradient(115deg, #318fe5 0%, #20acc0 52%, #1db493 100%);
@@ -55,8 +64,8 @@
 
 [data-theme=dark] {
   color-scheme: dark;
-  --color-page: #08232d;
-  --color-page-deep: #041720;
+  --color-page: #071f2b;
+  --color-page-deep: #041721;
   --color-surface: #0d2c37;
   --color-surface-subtle: #123844;
   --color-surface-elevated: #10333f;
@@ -82,6 +91,15 @@
   --ambient-one: rgb(67 165 221 / 17%);
   --ambient-two: rgb(52 198 179 / 13%);
   --ambient-warm: rgb(233 160 141 / 7%);
+  --background-canvas:
+    linear-gradient(135deg, #061923 0%, #082833 48%, #0a242f 100%);
+  --background-aqua: rgb(59 205 197 / 19%);
+  --background-sky: rgb(67 150 224 / 21%);
+  --background-mint: rgb(59 183 153 / 11%);
+  --background-peach: rgb(205 115 125 / 7%);
+  --background-cream: rgb(136 209 203 / 5%);
+  --background-violet: rgb(137 105 223 / 18%);
+  --background-blob-opacity: 0.68;
   --surface-glass: rgb(10 42 53 / 86%);
   --surface-tinted: rgb(13 53 64 / 90%);
   --gradient-primary: linear-gradient(115deg, #69b6e8 0%, #45bfc0 52%, #55c9a6 100%);
@@ -109,7 +127,8 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background: radial-gradient(circle at 88% -8%, var(--ambient-one), transparent 32rem), radial-gradient(circle at 8% 12%, var(--ambient-two), transparent 26rem), radial-gradient(circle at -8% 102%, var(--ambient-warm), transparent 28rem), linear-gradient(145deg, transparent 0 62%, color-mix(in srgb, var(--color-primary), transparent 97%) 100%), var(--color-page);
+  background: radial-gradient(ellipse at 12% 4%, var(--background-cream), transparent 38rem), radial-gradient(ellipse at 88% 18%, color-mix(in srgb, var(--background-sky), transparent 30%), transparent 34rem), radial-gradient(ellipse at 42% 108%, color-mix(in srgb, var(--background-mint), transparent 24%), transparent 40rem), var(--background-canvas), var(--color-page);
+  background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -354,25 +373,30 @@ body[data-page] {
 body[data-page]::before, body[data-page]::after {
   position: fixed;
   z-index: 0;
-  width: 30rem;
-  height: 30rem;
-  border-radius: 50%;
   content: "";
-  filter: blur(10px);
-  opacity: 0.82;
+  filter: blur(28px) saturate(112%);
+  opacity: var(--background-blob-opacity);
   pointer-events: none;
+  transform-origin: center;
+  will-change: transform;
 }
 body[data-page]::before {
-  top: -16rem;
-  right: -13rem;
-  background: radial-gradient(circle, var(--ambient-one), transparent 70%);
-  animation: ambient-drift-one 26s ease-in-out infinite alternate;
+  top: -17rem;
+  right: -18rem;
+  width: min(58rem, 82vw);
+  height: min(52rem, 76vw);
+  border-radius: 42% 58% 63% 37%/46% 39% 61% 54%;
+  background: radial-gradient(circle at 30% 35%, var(--background-sky) 0 18%, transparent 56%), radial-gradient(circle at 68% 58%, var(--background-aqua) 0 20%, transparent 58%), radial-gradient(circle at 42% 78%, var(--background-violet) 0 15%, transparent 48%);
+  animation: ambient-float-primary 28s ease-in-out infinite alternate;
 }
 body[data-page]::after {
-  bottom: -18rem;
-  left: -13rem;
-  background: radial-gradient(circle, var(--ambient-two), transparent 70%);
-  animation: ambient-drift-two 30s ease-in-out infinite alternate;
+  bottom: -20rem;
+  left: -19rem;
+  width: min(62rem, 88vw);
+  height: min(54rem, 78vw);
+  border-radius: 57% 43% 38% 62%/42% 58% 42% 58%;
+  background: radial-gradient(circle at 34% 36%, var(--background-mint) 0 18%, transparent 56%), radial-gradient(circle at 67% 44%, var(--background-peach) 0 16%, transparent 52%), radial-gradient(circle at 58% 76%, var(--background-aqua) 0 17%, transparent 54%);
+  animation: ambient-float-secondary 34s ease-in-out infinite alternate;
 }
 body[data-page] > :not(.toast-region, .modal-backdrop, .app-sidebar) {
   position: relative;
@@ -381,13 +405,13 @@ body[data-page] > :not(.toast-region, .modal-backdrop, .app-sidebar) {
 
 [data-page=login]::before,
 [data-page=signup]::before {
-  top: -12rem;
-  right: -8rem;
+  top: -14rem;
+  right: -12rem;
 }
 [data-page=login]::after,
 [data-page=signup]::after {
-  bottom: -15rem;
-  left: -9rem;
+  bottom: -17rem;
+  left: -13rem;
 }
 
 .auth-card,
@@ -440,20 +464,41 @@ body[data-page] > :not(.toast-region, .modal-backdrop, .app-sidebar) {
   animation: toast-enter 220ms ease-out both;
 }
 
-@keyframes ambient-drift-one {
+@keyframes ambient-float-primary {
   from {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) rotate(-4deg) scale(0.98);
   }
   to {
-    transform: translate3d(-2rem, 1.5rem, 0) scale(1.05);
+    transform: translate3d(-3.5rem, 2.25rem, 0) rotate(7deg) scale(1.06);
   }
 }
-@keyframes ambient-drift-two {
+@keyframes ambient-float-secondary {
   from {
-    transform: translate3d(0, 0, 0) scale(1.04);
+    transform: translate3d(0, 0, 0) rotate(5deg) scale(1.04);
   }
   to {
-    transform: translate3d(2.25rem, -1.5rem, 0) scale(0.98);
+    transform: translate3d(4rem, -2.5rem, 0) rotate(-6deg) scale(0.97);
+  }
+}
+@media (max-width: 40rem) {
+  body[data-page]::before {
+    top: -8rem;
+    right: -15rem;
+    width: 37rem;
+    height: 34rem;
+  }
+  body[data-page]::after {
+    bottom: -12rem;
+    left: -16rem;
+    width: 39rem;
+    height: 35rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-page]::before, body[data-page]::after {
+    animation: none;
+    transform: none;
+    will-change: auto;
   }
 }
 @keyframes surface-enter {

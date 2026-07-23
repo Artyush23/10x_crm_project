@@ -19,8 +19,8 @@ $radius-xl: 1.75rem;
 :root {
   color-scheme: light;
   --font-sans: #{$font-sans};
-  --color-page: #f2fbfc;
-  --color-page-deep: #e7f7f8;
+  --color-page: #f5fbf8;
+  --color-page-deep: #e8f7f5;
   --color-surface: #ffffff;
   --color-surface-subtle: #effafa;
   --color-surface-elevated: #ffffff;
@@ -46,6 +46,15 @@ $radius-xl: 1.75rem;
   --ambient-one: rgb(57 167 226 / 14%);
   --ambient-two: rgb(31 190 169 / 12%);
   --ambient-warm: rgb(241 135 105 / 9%);
+  --background-canvas:
+    linear-gradient(135deg, #f7fcf9 0%, #eefafa 42%, #fff8ef 100%);
+  --background-aqua: rgb(53 205 195 / 24%);
+  --background-sky: rgb(76 169 230 / 23%);
+  --background-mint: rgb(83 211 158 / 18%);
+  --background-peach: rgb(239 137 111 / 17%);
+  --background-cream: rgb(255 241 213 / 62%);
+  --background-violet: rgb(132 120 222 / 8%);
+  --background-blob-opacity: 0.72;
   --surface-glass: rgb(255 255 255 / 88%);
   --surface-tinted: rgb(237 250 250 / 90%);
   --gradient-primary: linear-gradient(115deg, #318fe5 0%, #20acc0 52%, #1db493 100%);
@@ -73,8 +82,8 @@ $radius-xl: 1.75rem;
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --color-page: #08232d;
-  --color-page-deep: #041720;
+  --color-page: #071f2b;
+  --color-page-deep: #041721;
   --color-surface: #0d2c37;
   --color-surface-subtle: #123844;
   --color-surface-elevated: #10333f;
@@ -100,6 +109,15 @@ $radius-xl: 1.75rem;
   --ambient-one: rgb(67 165 221 / 17%);
   --ambient-two: rgb(52 198 179 / 13%);
   --ambient-warm: rgb(233 160 141 / 7%);
+  --background-canvas:
+    linear-gradient(135deg, #061923 0%, #082833 48%, #0a242f 100%);
+  --background-aqua: rgb(59 205 197 / 19%);
+  --background-sky: rgb(67 150 224 / 21%);
+  --background-mint: rgb(59 183 153 / 11%);
+  --background-peach: rgb(205 115 125 / 7%);
+  --background-cream: rgb(136 209 203 / 5%);
+  --background-violet: rgb(137 105 223 / 18%);
+  --background-blob-opacity: 0.68;
   --surface-glass: rgb(10 42 53 / 86%);
   --surface-tinted: rgb(13 53 64 / 90%);
   --gradient-primary: linear-gradient(115deg, #69b6e8 0%, #45bfc0 52%, #55c9a6 100%);

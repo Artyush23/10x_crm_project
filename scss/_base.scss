@@ -14,11 +14,12 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(circle at 88% -8%, var(--ambient-one), transparent 32rem),
-    radial-gradient(circle at 8% 12%, var(--ambient-two), transparent 26rem),
-    radial-gradient(circle at -8% 102%, var(--ambient-warm), transparent 28rem),
-    linear-gradient(145deg, transparent 0 62%, color-mix(in srgb, var(--color-primary), transparent 97%) 100%),
+    radial-gradient(ellipse at 12% 4%, var(--background-cream), transparent 38rem),
+    radial-gradient(ellipse at 88% 18%, color-mix(in srgb, var(--background-sky), transparent 30%), transparent 34rem),
+    radial-gradient(ellipse at 42% 108%, color-mix(in srgb, var(--background-mint), transparent 24%), transparent 40rem),
+    var(--background-canvas),
     var(--color-page);
+  background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 1rem;
