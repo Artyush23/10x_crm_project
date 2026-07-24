@@ -1998,6 +1998,15 @@ body[data-page] > :not(.toast-region, .modal-backdrop, .app-sidebar) {
 :root {
   --color-page: #e9e9ed;
   --color-page-deep: #dedee4;
+  --canvas-glow: rgb(118 87 217 / 7%);
+  --canvas-glow-soft: rgb(167 145 229 / 5%);
+  --canvas-dot: rgb(65 61 82 / 5%);
+  --canvas-sweep: rgb(255 255 255 / 38%);
+  --canvas-background:
+    radial-gradient(circle at 14% 10%, var(--canvas-glow), transparent 30rem),
+    radial-gradient(circle at 88% 92%, var(--canvas-glow-soft), transparent 27rem),
+    radial-gradient(circle, var(--canvas-dot) 0 0.65px, transparent 0.75px),
+    var(--color-page);
   --color-workspace: #f8f8fa;
   --color-sidebar: #fbfbfc;
   --color-surface: #ffffff;
@@ -2048,6 +2057,10 @@ body[data-page] > :not(.toast-region, .modal-backdrop, .app-sidebar) {
 [data-theme=dark] {
   --color-page: #101116;
   --color-page-deep: #0b0c10;
+  --canvas-glow: rgb(154 130 239 / 9%);
+  --canvas-glow-soft: rgb(111 92 170 / 7%);
+  --canvas-dot: rgb(255 255 255 / 3%);
+  --canvas-sweep: rgb(178 158 238 / 5%);
   --color-workspace: #15161c;
   --color-sidebar: #18191f;
   --color-surface: #1c1d24;
@@ -2103,7 +2116,20 @@ body[data-page]::before, body[data-page]::after {
   will-change: auto;
 }
 body[data-page]::after {
-  display: none;
+  position: fixed;
+  z-index: 0;
+  inset: -45%;
+  display: block;
+  width: auto;
+  height: auto;
+  background: linear-gradient(115deg, transparent 42%, var(--canvas-sweep) 50%, transparent 58%);
+  content: "";
+  opacity: 0.72;
+  pointer-events: none;
+  transform: translate3d(-16%, -5%, 0) rotate(-3deg);
+  transform-origin: center;
+  animation: canvas-sweep 34s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 body.app-layout {
@@ -2127,6 +2153,48 @@ body.app-layout::before {
   pointer-events: none;
 }
 
+body,
+body.app-layout {
+  background: var(--canvas-background);
+  background-attachment: fixed;
+  background-position: 0% 0%, 100% 100%, 0 0, 0 0;
+  background-size: 118% 118%, 114% 114%, 18px 18px, auto;
+  animation: canvas-drift 36s ease-in-out infinite alternate;
+}
+
+.dashboard-page,
+.clients-page,
+.profile-page,
+.auth-card {
+  animation: saas-page-enter 180ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+@keyframes canvas-drift {
+  from {
+    background-position: 0% 0%, 100% 100%, 0 0, 0 0;
+  }
+  to {
+    background-position: 5% 3%, 95% 97%, 0 0, 0 0;
+  }
+}
+@keyframes canvas-sweep {
+  from {
+    transform: translate3d(-16%, -5%, 0) rotate(-3deg);
+  }
+  to {
+    transform: translate3d(16%, 5%, 0) rotate(3deg);
+  }
+}
+@keyframes saas-page-enter {
+  from {
+    opacity: 0.96;
+    transform: translate3d(0, 0.1875rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
 button,
 .button {
   min-height: 2.375rem;
@@ -3037,8 +3105,20 @@ textarea:focus {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  body,
+  body.app-layout,
   body[data-page]::before,
   body[data-page]::after {
+    animation: none;
+  }
+  body[data-page]::after {
+    transform: none;
+    will-change: auto;
+  }
+  .dashboard-page,
+  .clients-page,
+  .profile-page,
+  .auth-card {
     animation: none;
   }
 }

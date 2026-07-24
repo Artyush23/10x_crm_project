@@ -4,6 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Create a 10X CRM account.">
+    <script>
+      (() => {
+        let theme = "light";
+
+        try {
+          theme = localStorage.getItem("crm_theme") === "dark" ? "dark" : "light";
+        } catch {
+          theme = "light";
+        }
+
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.backgroundColor =
+          theme === "dark" ? "#101116" : "#e9e9ed";
+      })();
+    </script>
+    <style>
+      html {
+        min-height: 100%;
+        background: #e9e9ed;
+        color-scheme: light;
+      }
+
+      body {
+        min-height: 100%;
+        margin: 0;
+        background: inherit;
+      }
+
+      html[data-theme="dark"] {
+        background: #101116;
+        color-scheme: dark;
+      }
+    </style>
     <title>Sign Up | 10X CRM</title>
     <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
